@@ -1,0 +1,241 @@
+.morning-page {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+  animation: rise 0.5s var(--ease-out) both;
+}
+
+.morning-back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  text-decoration: none;
+  min-height: 40px;
+}
+
+.morning-back-link svg {
+  width: 18px;
+  height: 18px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.morning-hero {
+  margin: 0 calc(-1 * var(--space-4));
+  width: calc(100% + 2 * var(--space-4));
+  padding: var(--space-8) var(--space-5);
+  background: #111111;
+  color: #fff;
+}
+
+.morning-hero-kicker {
+  margin: 0 0 var(--space-3);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+}
+
+.morning-hero-title {
+  margin: 0 0 var(--space-3);
+  font-size: clamp(2.8rem, 12vw, 3.6rem);
+  color: #fff;
+}
+
+.morning-hero-lede {
+  margin: 0;
+  max-width: 34ch;
+  font-size: var(--font-size-sm);
+  color: rgba(255, 255, 255, 0.65);
+  line-height: 1.55;
+}
+
+.morning-today-badge {
+  display: inline-block;
+  margin-top: var(--space-4);
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #fff;
+  border: 1.5px solid rgba(255, 255, 255, 0.35);
+  padding: 6px 12px;
+}
+
+.morning-stories {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.morning-story {
+  padding: var(--space-6) 0;
+  border-bottom: 1px solid var(--color-border-light);
+}
+
+.morning-story:first-child {
+  border-top: 1px solid var(--color-border-light);
+}
+
+.morning-story-meta {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-3);
+  margin-bottom: var(--space-2);
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+}
+
+.morning-story-meta span:last-child {
+  color: var(--color-text-faint);
+}
+
+.morning-story h2 {
+  margin: 0 0 var(--space-1);
+  font-size: clamp(2rem, 8vw, 2.5rem);
+}
+
+.morning-story-sub {
+  margin: 0 0 var(--space-3);
+  font-size: var(--font-size-sm);
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+.morning-story-summary {
+  margin: 0 0 var(--space-4);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+  line-height: 1.5;
+}
+
+.morning-story-moves {
+  margin: 0 0 var(--space-5);
+  padding-left: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.morning-story-moves li {
+  display: flex;
+  gap: var(--space-3);
+  align-items: baseline;
+  font-size: var(--font-size-sm);
+  color: var(--color-text);
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--color-border-light);
+}
+
+.morning-story-moves li:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.morning-story-moves span {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  letter-spacing: 0.04em;
+  color: var(--color-accent);
+  min-width: 2.5ch;
+}
+
+.morning-story-actions {
+  display: flex;
+  gap: var(--space-2);
+}
+
+.morning-story-start {
+  flex: 1;
+  min-height: 52px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  background: var(--color-ink);
+  color: var(--color-on-ink);
+  border-radius: var(--radius);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.morning-story-start svg {
+  width: 14px;
+  height: 14px;
+  fill: currentColor;
+}
+
+.morning-story-demo {
+  min-height: 52px;
+  padding: 0 var(--space-4);
+  background: transparent;
+  color: var(--color-ink);
+  border: 1.5px solid var(--color-ink);
+  border-radius: var(--radius);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.morning-story-count {
+  margin: var(--space-3) 0 0;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-success);
+}
+
+.morning-demo {
+  margin-top: var(--space-4);
+}
+
+.morning-demo-frame {
+  position: relative;
+  aspect-ratio: 9 / 16;
+  max-height: 420px;
+  margin: 0 auto;
+  max-width: 240px;
+  background: #111;
+  overflow: hidden;
+  border-radius: var(--radius);
+}
+
+.morning-demo-frame iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+.morning-demo-note {
+  margin: var(--space-3) 0 0;
+  font-size: var(--font-size-xs);
+  color: var(--color-text-faint);
+  line-height: 1.45;
+}
+
+.morning-demo-link {
+  display: inline-block;
+  margin-top: var(--space-2);
+  font-size: var(--font-size-sm);
+  font-weight: 700;
+  color: var(--color-ink);
+}

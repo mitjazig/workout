@@ -1,0 +1,235 @@
+.exercise-card {
+  margin-bottom: 0;
+  padding: 0;
+  overflow: hidden;
+  border-radius: 0;
+  box-shadow: none;
+  border: none;
+  border-bottom: 1px solid var(--color-border-light);
+  transition: opacity 0.2s var(--ease);
+  animation: rise 0.45s var(--ease-out) both;
+}
+
+.exercise-card:hover {
+  box-shadow: none;
+  transform: none;
+}
+
+.exercise-card.exercise-done {
+  border-color: var(--color-border-light);
+  background: color-mix(in srgb, var(--color-success-bg) 40%, transparent);
+}
+
+.exercise-card-inner {
+  padding: var(--space-5) 0;
+}
+
+.exercise-header {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  margin-bottom: var(--space-4);
+}
+
+.exercise-number {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  min-width: 36px;
+  background: var(--color-ink);
+  color: var(--color-on-ink);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 1.2rem;
+  letter-spacing: 0.04em;
+  flex-shrink: 0;
+  box-shadow: none;
+}
+
+.exercise-done .exercise-number {
+  background: var(--color-success);
+}
+
+.exercise-header-text {
+  flex: 1;
+  min-width: 0;
+}
+
+.exercise-header h3 {
+  margin: 0 0 2px;
+  font-size: var(--font-size-md);
+  color: var(--color-text);
+  line-height: 1.3;
+}
+
+.exercise-category {
+  margin: 0 0 4px;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+}
+
+.exercise-description {
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  color: var(--color-primary-light);
+  margin: 0;
+}
+
+/* Illustration lives in ExerciseIllustration.css */
+.exercise-illustration {
+  margin: 0;
+  padding: 0 var(--space-5) var(--space-4);
+  background: transparent;
+}
+
+.exercise-illustration figcaption {
+  font-style: normal;
+}
+
+[data-theme="dark"] .exercise-done {
+  background: #062420;
+  border-color: #0d4030;
+}
+
+[data-theme="dark"] .exercise-done .exercise-footer {
+  background: #062420;
+  border-top-color: #0d4030;
+}
+
+[data-theme="dark"] .exercise-tips {
+  background: #1c1200;
+}
+
+/* Section: How-to */
+.exercise-howto {
+  background: var(--color-primary-subtle);
+  border-radius: var(--radius);
+  padding: var(--space-4) var(--space-5);
+  margin-bottom: var(--space-3);
+  border-left: 3px solid var(--color-primary);
+}
+
+.exercise-howto h4 {
+  font-size: var(--font-size-sm);
+  margin: 0 0 var(--space-3);
+  color: var(--color-primary);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.howto-steps {
+  margin: 0;
+  padding-left: 1.4rem;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.howto-steps li {
+  line-height: 1.55;
+  font-size: var(--font-size-sm);
+  color: var(--color-text);
+}
+
+/* Section: Tips */
+.exercise-tips {
+  background: var(--color-warning-bg);
+  border-left: 3px solid var(--color-accent);
+  border-radius: var(--radius);
+  padding: var(--space-4) var(--space-5);
+  margin-bottom: var(--space-3);
+}
+
+.exercise-tips h4 {
+  margin: 0 0 var(--space-2);
+  color: var(--color-accent);
+  font-size: var(--font-size-sm);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.exercise-tips ul {
+  margin: 0;
+  padding-left: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.exercise-tips li {
+  font-size: var(--font-size-sm);
+  line-height: 1.5;
+  color: var(--color-text);
+}
+
+/* Section: Instructions */
+.exercise-instructions {
+  margin-bottom: var(--space-3);
+  padding: var(--space-3) var(--space-5);
+  border-radius: var(--radius);
+  background: var(--color-surface-2);
+}
+
+.exercise-instructions h4 {
+  font-size: var(--font-size-xs);
+  margin: 0 0 var(--space-2);
+  color: var(--color-text-muted);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.exercise-instructions ul {
+  margin: 0;
+  padding-left: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.exercise-instructions li {
+  font-size: var(--font-size-sm);
+  line-height: 1.5;
+  color: var(--color-text-muted);
+}
+
+/* Completion button area */
+.exercise-footer {
+  padding: var(--space-4) var(--space-6);
+  border-top: 1px solid var(--color-border-light);
+  background: var(--color-surface);
+}
+
+.exercise-done .exercise-footer {
+  background: var(--color-success-bg);
+  border-top-color: #b8ddc5;
+}
+
+.exercise-done-label {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  color: var(--color-success);
+  font-weight: 700;
+  font-size: var(--font-size-sm);
+  justify-content: center;
+  padding: var(--space-2) 0;
+}
+
+.exercise-done-label svg {
+  width: 20px;
+  height: 20px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}

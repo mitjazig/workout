@@ -1,0 +1,113 @@
+.timer {
+  background: var(--color-surface-2);
+  border-radius: var(--radius);
+  padding: var(--space-5) var(--space-4);
+  text-align: center;
+  margin: var(--space-4) 0;
+  border: 1px solid var(--color-border-light);
+}
+
+.timer-ring {
+  position: relative;
+  width: 120px;
+  height: 120px;
+  margin: 0 auto var(--space-4);
+}
+
+.timer-ring svg {
+  width: 120px;
+  height: 120px;
+  transform: rotate(-90deg);
+}
+
+.timer-ring-bg {
+  fill: none;
+  stroke: var(--color-border);
+  stroke-width: 6;
+}
+
+.timer-ring-fill {
+  fill: none;
+  stroke: var(--color-accent);
+  stroke-width: 6;
+  stroke-linecap: round;
+  transition: stroke-dashoffset 0.5s linear;
+}
+
+.timer-ring-fill.finished {
+  stroke: var(--color-success);
+}
+
+.timer-ring-fill.running {
+  stroke: var(--color-glow);
+}
+
+.timer-display-center {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.timer-display {
+  font-family: var(--font-display);
+  font-size: 1.75rem;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  color: var(--color-text);
+  letter-spacing: 0.02em;
+  line-height: 1;
+}
+
+.timer-display.finished {
+  color: var(--color-success);
+}
+
+.timer-label {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-faint);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-top: 3px;
+}
+
+.timer-controls {
+  display: flex;
+  gap: var(--space-3);
+  justify-content: center;
+}
+
+.timer-controls .btn-small {
+  flex: 1;
+  max-width: 140px;
+  min-height: 44px;
+  font-size: var(--font-size-sm);
+}
+
+.timer-btn-start {
+  background: var(--color-ink);
+  color: var(--color-on-ink);
+  border-radius: var(--radius);
+  box-shadow: none;
+}
+
+.timer-btn-start:hover:not(:disabled) {
+  background: #000000;
+}
+
+.timer-btn-pause {
+  background: var(--color-surface);
+  color: var(--color-primary);
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius);
+}
+
+.timer-btn-reset {
+  background: var(--color-surface);
+  color: var(--color-text-muted);
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius);
+}
