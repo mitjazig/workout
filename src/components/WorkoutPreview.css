@@ -13,15 +13,15 @@
 .wp-sheet {
   width: 100%;
   max-width: 520px;
-  max-height: min(92vh, 900px);
+  max-height: min(90vh, 900px);
   overflow: auto;
   background: var(--color-bg);
   color: var(--color-text);
-  border-radius: 16px 16px 0 0;
-  padding: var(--space-5) var(--space-5) calc(var(--space-6) + env(safe-area-inset-bottom, 0px));
+  border-radius: 12px 12px 0 0;
+  padding: var(--space-4) var(--page-gutter) calc(var(--space-5) + env(safe-area-inset-bottom, 0px));
   display: flex;
   flex-direction: column;
-  gap: var(--space-5);
+  gap: var(--space-4);
   animation: wp-rise 0.35s var(--ease-out) both;
 }
 
@@ -67,7 +67,23 @@
 .wp-title {
   margin: 0 0 var(--space-2);
   padding-right: 52px;
-  font-size: clamp(2.2rem, 9vw, 2.8rem);
+  font-size: clamp(1.75rem, 8vw, 2.4rem);
+  line-height: 1.05;
+}
+
+@media (max-width: 480px) {
+  .wp-sheet {
+    gap: var(--space-3);
+    max-height: min(88vh, 900px);
+  }
+
+  .wp-meta {
+    gap: var(--space-2);
+  }
+
+  .wp-meta-item {
+    padding: var(--space-2) var(--space-3);
+  }
 }
 
 .wp-summary {

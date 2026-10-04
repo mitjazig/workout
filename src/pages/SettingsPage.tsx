@@ -166,10 +166,12 @@ export default function SettingsPage({
       <section className="settings-section">
         <p className="settings-section-title">Napredek</p>
         <p className="settings-current-program">
-          Aktivni izziv: <strong>{program.name}</strong>
+          Aktivni program: <strong>{program.name}</strong>
         </p>
         <button type="button" className="reset-btn" onClick={handleReset}>
-          {confirmReset ? 'Potrdi ponastavitev izziva' : 'Ponastavi napredek izziva'}
+          {confirmReset
+            ? 'Potrdi ponastavitev tega programa'
+            : 'Ponastavi napredek tega programa'}
         </button>
         {confirmReset && (
           <button type="button" className="btn-ghost" onClick={() => setConfirmReset(false)}>
@@ -184,14 +186,16 @@ export default function SettingsPage({
             Prekliči
           </button>
         )}
-        <p className="settings-hint">Napredek je shranjen lokalno na tej napravi.</p>
+        <p className="settings-hint">
+          Ponastavitev vpliva samo na aktivni program. Drugi programi ostanejo. Napredek je lokalno na tej napravi.
+        </p>
       </section>
 
       <section className="settings-section">
         <p className="settings-section-title">O aplikaciji</p>
         <div className="about-section">
-          <p><strong>Izziv 10 – Vadbe</strong> · v2.2</p>
-          <p>10-dnevni vadbeni izziv: ogrevanje, moč, kardio in mobilnost. PWA – deluje offline.</p>
+          <p><strong>Workout</strong> · v2.3</p>
+          <p>Več programov: Izziv 10, Chair Tai Chi in jutranji blok. PWA – deluje offline.</p>
           <span className="offline-badge">✓ Deluje brez internetne povezave</span>
         </div>
       </section>

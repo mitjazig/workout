@@ -27,6 +27,23 @@ export interface TreadmillPrescription {
   howTo?: string[];
 }
 
+/** Vizualna faza giba (Tai Chi ipd.) */
+export interface ExercisePhase {
+  id: string;
+  title: string;
+  instruction: string;
+  /** Pot pod public/, npr. media/tai-chi/cloud-hands/01-start.webp */
+  image?: string;
+}
+
+/** Medijski paket vaje – manjkajoče datoteke se graceful-fallbackajo */
+export interface ExerciseMedia {
+  thumbnail?: string;
+  loop?: string;
+}
+
+export type ExerciseSide = 'left' | 'right' | 'alternating' | 'none';
+
 /** YouTube vadba za dan (brezplačni javni videi) */
 export interface DayYoutubeVideo {
   videoId: string;
@@ -48,6 +65,18 @@ export interface Exercise {
   durationSeconds: number;
   /** Če obstaja: vaja se lahko izvede na stezi */
   treadmill?: TreadmillPrescription;
+  /** Angleško ime (Tai Chi) */
+  englishName?: string;
+  /** Namig za dihanje */
+  breathing?: string;
+  /** Stran / izmenjava */
+  side?: ExerciseSide;
+  /** Vizualne faze giba */
+  phases?: ExercisePhase[];
+  /** Thumbnail / loop animacija */
+  media?: ExerciseMedia;
+  /** Calm seated flow – mehkejši session UX */
+  style?: 'default' | 'taichi';
 }
 
 /** En dan vadbe */
@@ -62,13 +91,25 @@ export interface TrainingDay {
   exercises: Exercise[];
 }
 
-/** Celoten 10-dnevni vadbeni izziv */
+/** Vadbeni program (izziv, Tai Chi, …) */
 export interface Program {
   id: string;
   name: string;
   description: string;
   weeks: number;
   days: TrainingDay[];
+  /** Kratek opis na kartici / hubu */
+  shortDescription?: string;
+  /** Pot do naslovne slike (opcijsko) */
+  coverImage?: string;
+  /** npr. "10 dni", "28 dni" */
+  durationLabel?: string;
+  /** npr. ["Stol"] – prazno = brez opreme */
+  equipment?: string[];
+  /** Kratka oznaka (npr. "Tai Chi") */
+  badge?: string;
+  /** Kratko varnostno opozorilo na uvodu programa */
+  safetyNote?: string;
 }
 
 export interface DayProgress {

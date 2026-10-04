@@ -3,6 +3,7 @@ import { useAppState } from './hooks/useAppState';
 import Layout from './components/Layout';
 import Onboarding from './components/Onboarding';
 import HomePage from './pages/HomePage';
+import ProgramHomePage from './pages/ProgramHomePage';
 import DayPage from './pages/DayPage';
 import ProgressPage from './pages/ProgressPage';
 import SettingsPage from './pages/SettingsPage';
@@ -54,6 +55,10 @@ export default function App() {
           element={<HomePage state={state} onSelectProgram={selectProgram} />}
         />
         <Route
+          path="/program"
+          element={<ProgramHomePage state={state} />}
+        />
+        <Route
           path="/day/:dayId"
           element={
             <DayPage
@@ -63,6 +68,7 @@ export default function App() {
               onClearDay={clearDay}
               onCardioModeChange={updateCardioMode}
               onDifficultyChange={updateDifficulty}
+              onSelectProgram={selectProgram}
             />
           }
         />

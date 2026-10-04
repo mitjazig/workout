@@ -1,0 +1,207 @@
+.tc-media {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  width: 100%;
+}
+
+.tc-media-frame {
+  position: relative;
+  width: 100%;
+  max-width: 420px;
+  margin: 0 auto;
+  aspect-ratio: 4 / 5;
+  background: #111111;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.tc-media.has-visual .tc-media-frame {
+  max-width: 450px;
+}
+
+/* Seznam na danu: manjša slika, da 3 vaje ne pogoltnejo zaslona */
+.tc-media--compact.has-visual .tc-media-frame {
+  max-width: 180px;
+  max-height: 220px;
+  width: 100%;
+}
+
+.tc-media--compact .tc-phases {
+  max-width: 280px;
+  gap: 2px;
+}
+
+.tc-media--compact .tc-phases-title {
+  font-size: 1rem;
+}
+
+.tc-media--compact .tc-phases-text {
+  display: none;
+}
+
+.tc-media--compact .tc-nav-btn {
+  min-height: 40px;
+  font-size: 1.1rem;
+}
+
+.tc-media-frame--compact {
+  aspect-ratio: auto;
+  min-height: 96px;
+  max-height: 120px;
+  max-width: 420px;
+  padding: var(--space-3) var(--space-4);
+}
+
+.tc-media-el {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+  display: block;
+  background: #111111;
+}
+
+.tc-media-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  text-align: center;
+  width: 100%;
+}
+
+.tc-media-placeholder-mark {
+  font-size: 1.25rem;
+  line-height: 1;
+  color: rgba(255, 255, 255, 0.35);
+}
+
+.tc-media-placeholder p {
+  margin: 0;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: rgba(255, 255, 255, 0.55);
+  max-width: 28ch;
+}
+
+.tc-phases {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  text-align: center;
+  max-width: 420px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.tc-phases-count {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+}
+
+.tc-phases-title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.tc-phases-text {
+  margin: 0;
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+  line-height: 1.5;
+}
+
+.tc-phases-dots {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  padding: var(--space-1) 0;
+}
+
+.tc-dot {
+  width: 10px;
+  height: 10px;
+  padding: 0;
+  border-radius: 50%;
+  border: 1.5px solid var(--color-border);
+  background: transparent;
+  cursor: pointer;
+}
+
+.tc-dot.active {
+  background: var(--color-ink);
+  border-color: var(--color-ink);
+}
+
+.tc-phases-nav {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding-top: var(--space-1);
+}
+
+.tc-nav-btn {
+  flex: 1;
+  min-height: 48px;
+  border: 1.5px solid var(--color-border);
+  background: transparent;
+  border-radius: var(--radius);
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--color-ink);
+  cursor: pointer;
+}
+
+.tc-nav-btn:active:not(:disabled) {
+  background: var(--color-surface-2);
+}
+
+.tc-nav-btn:disabled {
+  opacity: 0.28;
+  cursor: not-allowed;
+}
+
+@media (max-width: 480px) {
+  .tc-media:not(.tc-media--compact).has-visual .tc-media-frame {
+    max-width: min(100%, 280px);
+    max-height: min(38vh, 300px);
+  }
+
+  .tc-media--compact.has-visual .tc-media-frame {
+    max-width: 160px;
+    max-height: 200px;
+  }
+
+  .tc-phases-title {
+    font-size: 1.15rem;
+  }
+
+  .tc-nav-btn {
+    min-height: 44px;
+  }
+}
+
+@media (min-width: 640px) {
+  .tc-media.has-visual .tc-media-frame {
+    max-width: 450px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tc-media-el {
+    scroll-behavior: auto;
+  }
+}

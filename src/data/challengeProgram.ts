@@ -37,9 +37,13 @@ function day(
 /** 10-dnevni vadbeni izziv – samo gibanje, brez prehrane/mindseta */
 export const challengeProgram: Program = {
   id: 'challenge-10',
-  name: 'Izziv 10 – Vadbe',
+  name: 'Izziv 10',
   description:
     '10 dni kratkih vadb doma: ogrevanje, moč, kardio in mobilnost. 15–30 minut na dan – brez opreme.',
+  shortDescription: 'Doma. Brez opreme. 15–30 minut na dan.',
+  durationLabel: '10 dni',
+  equipment: [],
+  badge: 'Moč + kondicija',
   weeks: 2,
   days: [
     day(1, 'Začetek – hoja in mobilnost', 'Lahek uvod: ogrevanje, 15 min hoje, razteg.', 'cardio', 20, [

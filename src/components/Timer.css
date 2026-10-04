@@ -1,23 +1,39 @@
 .timer {
   background: var(--color-surface-2);
   border-radius: var(--radius);
-  padding: var(--space-5) var(--space-4);
+  padding: var(--space-4) var(--space-3);
   text-align: center;
-  margin: var(--space-4) 0;
+  margin: var(--space-3) 0 0;
   border: 1px solid var(--color-border-light);
 }
 
 .timer-ring {
   position: relative;
-  width: 120px;
-  height: 120px;
-  margin: 0 auto var(--space-4);
+  width: 96px;
+  height: 96px;
+  margin: 0 auto var(--space-3);
 }
 
 .timer-ring svg {
-  width: 120px;
-  height: 120px;
+  width: 96px;
+  height: 96px;
   transform: rotate(-90deg);
+}
+
+@media (max-width: 480px) {
+  .timer {
+    padding: var(--space-3);
+  }
+
+  .timer-ring,
+  .timer-ring svg {
+    width: 84px;
+    height: 84px;
+  }
+
+  .timer-display {
+    font-size: 1.4rem;
+  }
 }
 
 .timer-ring-bg {

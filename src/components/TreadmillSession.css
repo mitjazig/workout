@@ -84,9 +84,10 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: var(--space-6) var(--space-5);
+  padding: var(--space-4) var(--page-gutter);
   text-align: center;
   gap: var(--space-3);
+  overflow-y: auto;
 }
 
 .tm-seg-kicker {
@@ -100,8 +101,9 @@
 
 .tm-seg-name {
   margin: 0;
-  font-size: clamp(1.8rem, 6vw, 2.4rem);
+  font-size: clamp(1.45rem, 6vw, 2.1rem);
   font-weight: 600;
+  line-height: 1.1;
 }
 
 .tm-seg-note {
@@ -133,7 +135,7 @@
 
 .tm-target-value {
   font-family: var(--font-display);
-  font-size: clamp(2.4rem, 10vw, 3.2rem);
+  font-size: clamp(1.9rem, 8vw, 2.8rem);
   font-weight: 600;
   line-height: 1;
   letter-spacing: -0.03em;
@@ -167,7 +169,7 @@
 
 .tm-timer-display {
   font-family: var(--font-display);
-  font-size: 3rem;
+  font-size: clamp(2.2rem, 9vw, 3rem);
   font-weight: 600;
   font-variant-numeric: tabular-nums;
   letter-spacing: -0.02em;
@@ -224,8 +226,22 @@
 }
 
 .tm-session-actions {
-  padding: var(--space-4) var(--space-5) calc(var(--space-5) + env(safe-area-inset-bottom, 0px));
+  padding: var(--space-3) var(--page-gutter) calc(var(--space-4) + env(safe-area-inset-bottom, 0px));
   flex-shrink: 0;
+}
+
+@media (max-width: 480px) {
+  .tm-targets {
+    margin: var(--space-3) 0;
+  }
+
+  .tm-target {
+    padding: var(--space-3) var(--space-2);
+  }
+
+  .tm-timer {
+    padding: var(--space-3);
+  }
 }
 
 .tm-done {

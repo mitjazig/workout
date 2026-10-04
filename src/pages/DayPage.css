@@ -7,13 +7,13 @@
   display: inline-flex;
   align-items: center;
   gap: var(--space-2);
-  margin-bottom: var(--space-4);
+  margin-bottom: var(--space-3);
   font-size: 0.72rem;
   font-weight: 700;
   color: var(--color-text-muted);
   text-decoration: none;
-  min-height: 40px;
-  line-height: 40px;
+  min-height: 36px;
+  line-height: 36px;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   transition: color var(--dur-fast);
@@ -38,8 +38,8 @@
 .day-header {
   background: transparent;
   border-radius: 0;
-  padding: 0 0 var(--space-6);
-  margin-bottom: var(--space-5);
+  padding: 0 0 var(--space-4);
+  margin-bottom: var(--space-4);
   border: none;
   border-bottom: 1px solid var(--color-border-light);
   box-shadow: none;
@@ -68,9 +68,10 @@
 }
 
 .day-header h2 {
-  font-size: clamp(2.2rem, 9vw, 3rem);
+  font-size: clamp(1.85rem, 8vw, 2.6rem);
   margin-bottom: var(--space-2);
   letter-spacing: 0.02em;
+  line-height: 1.05;
 }
 
 .day-header > p {
@@ -91,7 +92,7 @@
   justify-content: center;
   gap: var(--space-3);
   width: 100%;
-  min-height: 56px;
+  min-height: 52px;
   background: var(--color-ink);
   color: var(--color-on-ink);
   border: none;
@@ -103,7 +104,7 @@
   text-transform: uppercase;
   cursor: pointer;
   box-shadow: none;
-  margin-bottom: var(--space-5);
+  margin-bottom: var(--space-4);
   animation: rise 0.55s var(--ease-out) 0.1s both;
 }
 

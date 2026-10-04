@@ -93,10 +93,10 @@ export default function Layout({ children }: { children?: React.ReactNode }) {
   return (
     <div className="layout">
       <header className="layout-header">
-        <div className="layout-mark" aria-hidden="true">10</div>
+        <div className="layout-mark" aria-hidden="true">W</div>
         <div className="layout-header-text">
-          <p className="layout-brand">Izziv 10</p>
-          <p className="layout-subtitle">Vadbe · doma</p>
+          <p className="layout-brand">Workout</p>
+          <p className="layout-subtitle">Programi · doma</p>
         </div>
         <button
           type="button"
@@ -120,7 +120,12 @@ export default function Layout({ children }: { children?: React.ReactNode }) {
               key={to}
               to={to}
               end={end}
-              className={({ isActive }) => (isActive ? 'nav-link active' : 'nav-link')}
+              className={({ isActive }) => {
+                const onProgramFlow =
+                  to === '/' &&
+                  (location.pathname === '/program' || location.pathname.startsWith('/day/'));
+                return isActive || onProgramFlow ? 'nav-link active' : 'nav-link';
+              }}
             >
               <span className="nav-icon"><Icon /></span>
               <span className="nav-label">{label}</span>

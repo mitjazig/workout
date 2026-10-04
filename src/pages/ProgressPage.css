@@ -6,7 +6,7 @@
 
 .progress-page h2 {
   margin-bottom: var(--space-1);
-  font-size: clamp(2.2rem, 8vw, 2.8rem);
+  font-size: clamp(1.8rem, 7vw, 2.4rem);
   animation: fade-up 0.45s var(--ease-out) both;
 }
 
@@ -20,7 +20,7 @@
 
 .stats-card {
   text-align: center;
-  padding: var(--space-8) var(--space-5);
+  padding: var(--space-6) var(--page-gutter);
   position: relative;
   overflow: hidden;
   isolation: isolate;
@@ -28,8 +28,8 @@
   border: none;
   box-shadow: none;
   border-radius: 0;
-  margin: 0 calc(-1 * var(--space-4));
-  width: calc(100% + 2 * var(--space-4));
+  margin: 0 calc(-1 * var(--page-gutter));
+  width: calc(100% + 2 * var(--page-gutter));
   animation: rise 0.6s var(--ease-out) 0.06s both;
 }
 
@@ -58,7 +58,7 @@
 
 .stat-big {
   font-family: var(--font-display);
-  font-size: clamp(5rem, 22vw, 6.5rem);
+  font-size: clamp(3.4rem, 16vw, 5.5rem);
   font-weight: 400;
   color: #fff;
   line-height: 0.85;
@@ -75,7 +75,25 @@
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.16em;
-  margin-bottom: var(--space-6);
+  margin-bottom: var(--space-4);
+}
+
+@media (max-width: 480px) {
+  .progress-page {
+    gap: var(--space-4);
+  }
+
+  .stats-card {
+    padding: var(--space-5) var(--page-gutter);
+  }
+
+  .stats-row {
+    margin: var(--space-3) 0;
+  }
+
+  .stat {
+    padding: var(--space-3) var(--space-2);
+  }
 }
 
 .stats-row {

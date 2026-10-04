@@ -21,7 +21,65 @@
 }
 
 .exercise-card-inner {
-  padding: var(--space-5) 0;
+  padding: var(--space-4) 0;
+}
+
+.exercise-card-details {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding-top: var(--space-2);
+}
+
+.exercise-fold {
+  border: 1px solid var(--color-border-light);
+  border-radius: var(--radius);
+  padding: 0;
+  background: var(--color-surface);
+}
+
+.exercise-fold summary {
+  cursor: pointer;
+  list-style: none;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  padding: 0 var(--space-4);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+.exercise-fold summary::-webkit-details-marker {
+  display: none;
+}
+
+.exercise-fold[open] summary {
+  border-bottom: 1px solid var(--color-border-light);
+  color: var(--color-ink);
+}
+
+.exercise-fold > *:not(summary) {
+  margin: 0;
+  padding: var(--space-3) var(--space-4) var(--space-4);
+}
+
+.exercise-fold p,
+.exercise-fold li {
+  font-size: var(--font-size-sm);
+  line-height: 1.45;
+  color: var(--color-text);
+}
+
+.exercise-fold .howto-steps,
+.exercise-fold ul {
+  margin: 0;
+  padding-left: 1.2rem;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
 }
 
 .exercise-header {
@@ -79,6 +137,55 @@
   font-weight: 500;
   color: var(--color-primary-light);
   margin: 0;
+}
+
+.exercise-english {
+  margin: 0 0 var(--space-1);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-text-faint);
+}
+
+.exercise-breathing {
+  margin-bottom: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  border-left: 3px solid var(--color-accent);
+  background: var(--color-accent-soft);
+  border-radius: 0 var(--radius) var(--radius) 0;
+}
+
+.exercise-breathing h4 {
+  margin: 0 0 var(--space-1);
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+}
+
+.exercise-breathing p {
+  margin: 0;
+  font-size: var(--font-size-sm);
+  color: var(--color-text);
+  line-height: 1.5;
+}
+
+.exercise-taichi-media {
+  padding: 0 0 var(--space-3);
+}
+
+.exercise-card.taichi .exercise-header {
+  margin-bottom: var(--space-2);
+}
+
+.exercise-card.taichi .exercise-description {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  line-clamp: 2;
+  overflow: hidden;
 }
 
 /* Illustration lives in ExerciseIllustration.css */
@@ -203,7 +310,7 @@
 
 /* Completion button area */
 .exercise-footer {
-  padding: var(--space-4) var(--space-6);
+  padding: var(--space-3) 0;
   border-top: 1px solid var(--color-border-light);
   background: var(--color-surface);
 }

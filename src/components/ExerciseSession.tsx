@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useTimer } from '../hooks/useTimer';
 import type { TrainingDay } from '../types';
 import ExerciseIllustration from './ExerciseIllustration';
+import TaiChiExerciseMedia from './TaiChiExerciseMedia';
 import './ExerciseSession.css';
 import './CardioModeToggle.css';
 
@@ -27,7 +28,15 @@ function formatSpeed(v: number) {
   return v.toFixed(1).replace('.', ',');
 }
 
-function Timer({ durationSeconds, onFinish }: { durationSeconds: number; onFinish: () => void }) {
+function Timer({
+  durationSeconds,
+  onFinish,
+  calm,
+}: {
+  durationSeconds: number;
+  onFinish: () => void;
+  calm?: boolean;
+}) {
   const { display, running, finished, start, pause, reset } = useTimer(durationSeconds);
 
   useEffect(() => {
@@ -35,12 +44,15 @@ function Timer({ durationSeconds, onFinish }: { durationSeconds: number; onFinis
   }, [finished, onFinish]);
 
   return (
-    <div className="session-timer">
+    <div className={`session-timer ${calm ? 'calm' : ''}`}>
       <div className={`session-timer-time ${finished ? 'finished' : ''}`}>{display}</div>
+      {finished && calm && (
+        <p className="session-timer-calm-note">Čas je mimo – doključite krog, nato naprej.</p>
+      )}
       <div className="session-timer-btns">
         {!running ? (
           <button className="s-btn start" onClick={start} disabled={finished}>
-            {finished ? '✓ Konec' : '▶ Začni'}
+            {finished ? (calm ? 'Pripravljeno' : '✓ Konec') : '▶ Začni'}
           </button>
         ) : (
           <button className="s-btn pause" onClick={pause}>⏸ Pavza</button>
@@ -67,6 +79,7 @@ export default function ExerciseSession({
 
   const exercise = exercises[index];
   const tm = useTreadmill ? exercise.treadmill : undefined;
+  const isTaiChi = exercise.style === 'taichi';
   const isCompleted = completedExercises.includes(exercise.id);
   const isLast = index === exercises.length - 1;
   const percent = Math.round((index / exercises.length) * 100);
@@ -86,11 +99,13 @@ export default function ExerciseSession({
 
   if (allDone) {
     return (
-      <div className="session-overlay">
+      <div className={`session-overlay ${isTaiChi ? 'session-taichi' : ''}`}>
         <div className="session-topbar">
           <button className="session-back" onClick={onClose}><IconBack /></button>
           <div className="session-progress-wrap">
-            <span className="session-progress-label">Trening zaključen</span>
+            <span className="session-progress-label">
+              {day.focus === 'mobility' ? 'Vadba zaključena' : 'Trening zaključen'}
+            </span>
             <div className="session-progress-bar">
               <div className="session-progress-fill" style={{ width: '100%' }} />
             </div>
@@ -99,7 +114,7 @@ export default function ExerciseSession({
         </div>
         <div className="session-done-screen">
           <div className="session-done-icon">✓</div>
-          <h2>Odlično!</h2>
+          <h2>{isTaiChi || day.focus === 'mobility' ? 'Mirno zaključeno' : 'Odlično!'}</h2>
           <p>Vsi koraki za danes so opravljeni.</p>
           <button className="session-done-close" onClick={onClose}>
             <IconCheck /> Nazaj na dan
@@ -110,7 +125,7 @@ export default function ExerciseSession({
   }
 
   return (
-    <div className="session-overlay">
+    <div className={`session-overlay ${isTaiChi ? 'session-taichi' : ''}`}>
       <div className="session-topbar">
         <button className="session-back" onClick={onClose} aria-label="Zapri vadbo">
           <IconBack />
@@ -126,6 +141,9 @@ export default function ExerciseSession({
 
       <div className="session-body">
         <h2 className="session-name">{exercise.name}</h2>
+        {exercise.englishName && (
+          <p className="session-english">{exercise.englishName}</p>
+        )}
         <p className="session-desc">
           {tm?.note ?? exercise.description}
         </p>
@@ -145,16 +163,50 @@ export default function ExerciseSession({
               <span className="tm-chip-label">naklon %</span>
             </div>
           </div>
+        ) : isTaiChi ? (
+          <div className="session-taichi-media">
+            <TaiChiExerciseMedia exercise={exercise} />
+          </div>
         ) : (
           <div className="session-illus">
             <ExerciseIllustration category={exercise.category} label={exercise.name} />
           </div>
         )}
 
+        {exercise.breathing && (
+          <div className="session-breathing">
+            <p className="session-breathing-label">Dihanje</p>
+            <p>{exercise.breathing}</p>
+          </div>
+        )}
+
+        {!tm && exercise.howTo.length > 0 && (
+          <details className="session-howto">
+            <summary>Korak za korakom</summary>
+            <ol>
+              {exercise.howTo.map((step, i) => (
+                <li key={i}>{step}</li>
+              ))}
+            </ol>
+          </details>
+        )}
+
+        {exercise.tips && exercise.tips.length > 0 && (
+          <details className="session-howto session-tips">
+            <summary>Pazi na to</summary>
+            <ul>
+              {exercise.tips.map((tip, i) => (
+                <li key={i}>{tip}</li>
+              ))}
+            </ul>
+          </details>
+        )}
+
         <Timer
           key={`${exercise.id}-${timerKey}`}
           durationSeconds={exercise.durationSeconds}
           onFinish={handleComplete}
+          calm={isTaiChi}
         />
 
         <div className="session-actions">

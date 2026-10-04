@@ -1,6 +1,7 @@
 import type { Exercise } from '../types';
 import { categoryLabel } from '../data/categories';
 import ExerciseIllustration from './ExerciseIllustration';
+import TaiChiExerciseMedia from './TaiChiExerciseMedia';
 import Timer from './Timer';
 import './ExerciseCard.css';
 import './CardioModeToggle.css';
@@ -34,23 +35,36 @@ export default function ExerciseCard({
 }: ExerciseCardProps) {
   const tm = useTreadmill ? exercise.treadmill : undefined;
   const howTo = tm?.howTo?.length ? tm.howTo : exercise.howTo;
+  const isTaiChi = exercise.style === 'taichi';
 
   return (
-    <article className={`exercise-card ${completed ? 'exercise-done' : ''}`}>
+    <article className={`exercise-card ${completed ? 'exercise-done' : ''} ${isTaiChi ? 'taichi' : ''}`}>
       <div className="exercise-card-inner">
         <header className="exercise-header">
           <span className="exercise-number" aria-hidden>{index + 1}</span>
           <div className="exercise-header-text">
-            <p className="exercise-category">{categoryLabel(exercise.category)}</p>
+            <p className="exercise-category">
+              {isTaiChi ? 'Tai Chi' : categoryLabel(exercise.category)}
+              {exercise.side === 'alternating' ? ' · izmenično' : ''}
+            </p>
             <h3>{exercise.name}</h3>
+            {exercise.englishName && (
+              <p className="exercise-english">{exercise.englishName}</p>
+            )}
             <p className="exercise-description">{exercise.description}</p>
           </div>
         </header>
       </div>
 
-      <ExerciseIllustration category={exercise.category} label={exercise.name} />
+      {isTaiChi ? (
+        <div className="exercise-taichi-media">
+          <TaiChiExerciseMedia exercise={exercise} density="compact" />
+        </div>
+      ) : (
+        <ExerciseIllustration category={exercise.category} label={exercise.name} />
+      )}
 
-      <div className="exercise-card-inner">
+      <div className="exercise-card-inner exercise-card-details">
         {tm && (
           <>
             {tm.note && <p className="tm-guide-note">{tm.note}</p>}
@@ -71,35 +85,42 @@ export default function ExerciseCard({
           </>
         )}
 
-        <div className="exercise-howto">
-          <h4>{tm ? 'Na stezi' : 'Korak za korakom'}</h4>
+        {exercise.breathing && (
+          <details className="exercise-fold">
+            <summary>Dihanje</summary>
+            <p>{exercise.breathing}</p>
+          </details>
+        )}
+
+        <details className="exercise-fold">
+          <summary>{tm ? 'Na stezi' : 'Korak za korakom'}</summary>
           <ol className="howto-steps">
             {howTo.map((step, i) => (
               <li key={i}>{step}</li>
             ))}
           </ol>
-        </div>
+        </details>
 
         {exercise.tips && exercise.tips.length > 0 && (
-          <div className="exercise-tips">
-            <h4>Pazite na to</h4>
+          <details className="exercise-fold">
+            <summary>Pazi na to</summary>
             <ul>
               {exercise.tips.map((tip, i) => (
                 <li key={i}>{tip}</li>
               ))}
             </ul>
-          </div>
+          </details>
         )}
 
         {exercise.instructions.length > 0 && !tm && (
-          <div className="exercise-instructions">
-            <h4>Opomniki</h4>
+          <details className="exercise-fold">
+            <summary>Opomniki</summary>
             <ul>
               {exercise.instructions.map((step, i) => (
                 <li key={i}>{step}</li>
               ))}
             </ul>
-          </div>
+          </details>
         )}
 
         <Timer

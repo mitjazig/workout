@@ -61,6 +61,7 @@
   --shadow-accent: none;
 
   --touch-min: 52px;
+  --page-gutter: 1rem;
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
   --ease-spring: cubic-bezier(0.34, 1.2, 0.64, 1);
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
@@ -423,7 +424,55 @@ button:disabled {
   }
 }
 
-@media (min-width: 480px) {
+/* Celoten app: gostejši mobilni layout */
+@media (max-width: 480px) {
+  :root {
+    --font-size-xs: 0.7rem;
+    --font-size-sm: 0.8125rem;
+    --font-size-base: 0.9375rem;
+    --font-size-md: 1.05rem;
+    --font-size-lg: 1.2rem;
+    --font-size-xl: 1.55rem;
+    --font-size-2xl: 2.15rem;
+    --font-size-3xl: 3rem;
+    --space-4: 0.85rem;
+    --space-5: 1.05rem;
+    --space-6: 1.25rem;
+    --space-8: 1.6rem;
+    --space-10: 2rem;
+    --space-12: 2.35rem;
+    --touch-min: 48px;
+    --page-gutter: 0.75rem;
+  }
+
+  html {
+    font-size: 15px;
+  }
+
+  h1 {
+    margin-bottom: var(--space-3);
+  }
+
+  h2 {
+    margin-bottom: var(--space-3);
+  }
+
+  p {
+    margin-bottom: var(--space-3);
+  }
+
+  button {
+    padding: var(--space-2) var(--space-4);
+  }
+
+  .btn-primary,
+  .btn-secondary,
+  .btn-accent {
+    min-height: 48px;
+  }
+}
+
+@media (min-width: 481px) {
   html { font-size: 17px; }
 }
 

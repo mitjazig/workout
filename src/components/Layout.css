@@ -5,13 +5,14 @@
   max-width: 640px;
   margin: 0 auto;
   background: var(--color-bg);
+  overflow-x: hidden;
 }
 
 .layout-header {
   display: flex;
   align-items: center;
   gap: var(--space-3);
-  padding: var(--space-4) var(--space-5);
+  padding: var(--space-3) var(--page-gutter);
   position: sticky;
   top: 0;
   z-index: 10;
@@ -61,9 +62,50 @@
 
 .layout-main {
   flex: 1;
-  padding: var(--space-5) var(--space-4);
-  padding-bottom: calc(72px + env(safe-area-inset-bottom, 0px) + var(--space-6));
+  padding: var(--space-4) var(--page-gutter);
+  padding-bottom: calc(68px + env(safe-area-inset-bottom, 0px) + var(--space-5));
   animation: rise 0.5s var(--ease-out) both;
+}
+
+@media (max-width: 480px) {
+  .layout-header {
+    padding: var(--space-2) var(--page-gutter);
+  }
+
+  .layout-mark {
+    width: 30px;
+    height: 30px;
+    font-size: 1rem;
+  }
+
+  .layout-brand {
+    font-size: 1.25rem;
+  }
+
+  .layout-subtitle {
+    font-size: 0.55rem;
+  }
+
+  .layout-main {
+    padding: var(--space-3) var(--page-gutter);
+    padding-bottom: calc(62px + env(safe-area-inset-bottom, 0px) + var(--space-4));
+  }
+
+  .nav-link {
+    min-height: 46px;
+    padding: 5px 2px;
+    gap: 2px;
+  }
+
+  .nav-icon,
+  .nav-icon svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  .layout-nav-inner {
+    padding: 4px 4px calc(4px + env(safe-area-inset-bottom, 0px));
+  }
 }
 
 .dark-toggle {

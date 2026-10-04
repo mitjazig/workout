@@ -14,7 +14,7 @@ import type {
   WeeklySummary,
   WorkoutDifficulty,
 } from '../types';
-import { getProgram } from '../data/programs';
+import { getProgram, allPrograms } from '../data/programs';
 import { challengeProgram } from '../data/challengeProgram';
 import { getMorningRoutine } from '../data/morningRoutines';
 import { getTreadmillWorkout } from '../data/treadmillWorkouts';
@@ -22,7 +22,7 @@ import { BADGES } from '../data/badges';
 import { storage } from './storage';
 
 const STATE_KEY = 'app-state';
-const STATE_VERSION = 10;
+const STATE_VERSION = 11;
 
 /** Hitri vnos steze (brez vodene seje) */
 export const QUICK_TREADMILL_ID = 'tm-quick';
@@ -71,12 +71,33 @@ export function createDefaultProgress(programId: string): UserProgress {
   };
 }
 
+/** Začetni napredek za vse registrirane programe */
+export function createInitialProgramsMap(
+  existing?: Record<string, UserProgress> | Partial<Record<string, UserProgress>>,
+): Record<string, UserProgress> {
+  const programs: Record<string, UserProgress> = {};
+  for (const program of allPrograms) {
+    const saved = existing?.[program.id];
+    if (saved && saved.programId) {
+      programs[program.id] = {
+        programId: program.id,
+        startedAt: saved.startedAt || new Date().toISOString(),
+        currentDayIndex:
+          typeof saved.currentDayIndex === 'number' ? saved.currentDayIndex : 0,
+        completedDays: Array.isArray(saved.completedDays) ? saved.completedDays : [],
+        lastActiveAt: saved.lastActiveAt || saved.startedAt || new Date().toISOString(),
+      };
+    } else {
+      programs[program.id] = createDefaultProgress(program.id);
+    }
+  }
+  return programs;
+}
+
 function createDefaultState(): AppState {
   return {
     activeProgramId: challengeProgram.id,
-    programs: {
-      [challengeProgram.id]: createDefaultProgress(challengeProgram.id),
-    },
+    programs: createInitialProgramsMap(),
     reminders: defaultReminders,
     treadmillCompletions: [],
     morningCompletions: [],
@@ -92,27 +113,37 @@ function normalizeDifficulty(value: unknown): WorkoutDifficulty {
   return value === 'easy' ? 'easy' : 'standard';
 }
 
+function isKnownProgramId(id: string | undefined): id is string {
+  return !!id && allPrograms.some((p) => p.id === id);
+}
+
 function migrateState(saved: Partial<AppState> & { progress?: UserProgress }): AppState {
   const base = createDefaultState();
 
-  if (
-    (saved.version === 3 ||
-      saved.version === 4 ||
-      saved.version === 5 ||
-      saved.version === 6 ||
-      saved.version === 7 ||
-      saved.version === 8 ||
-      saved.version === 9 ||
-      saved.version === STATE_VERSION) &&
-    saved.programs?.[challengeProgram.id]
-  ) {
+  const knownVersions = [3, 4, 5, 6, 7, 8, 9, 10, STATE_VERSION];
+  const hasPrograms =
+    saved.programs &&
+    (saved.programs[challengeProgram.id] ||
+      Object.keys(saved.programs).some((id) => isKnownProgramId(id)));
+
+  if (knownVersions.includes(saved.version as number) && hasPrograms) {
+    const programs = createInitialProgramsMap(saved.programs);
+
+    // Legacy: single `progress` field → challenge-10
+    if (saved.progress && !saved.programs?.[challengeProgram.id]) {
+      programs[challengeProgram.id] = {
+        ...createDefaultProgress(challengeProgram.id),
+        ...saved.progress,
+        programId: challengeProgram.id,
+      };
+    }
+
     return {
       ...base,
-      activeProgramId: challengeProgram.id,
-      programs: {
-        [challengeProgram.id]:
-          saved.programs[challengeProgram.id] ?? createDefaultProgress(challengeProgram.id),
-      },
+      activeProgramId: isKnownProgramId(saved.activeProgramId)
+        ? saved.activeProgramId
+        : challengeProgram.id,
+      programs,
       reminders: { ...base.reminders, ...saved.reminders },
       treadmillCompletions: normalizeTreadmillCompletions(saved.treadmillCompletions),
       morningCompletions: normalizeMorningCompletions(saved.morningCompletions),
@@ -155,12 +186,36 @@ export function getActiveProgress(state: AppState): UserProgress {
   return state.programs[id] ?? createDefaultProgress(id);
 }
 
-export function isDayCompleted(state: AppState, dayId: string): boolean {
-  const program = getProgram(state.activeProgramId);
+/** Napredek posameznega programa (Hub kartice) – nikoli globalni active */
+export function getProgramProgress(state: AppState, programId: string): UserProgress {
+  return state.programs[programId] ?? createDefaultProgress(programId);
+}
+
+export function isProgramDayCompleted(
+  state: AppState,
+  programId: string,
+  dayId: string,
+): boolean {
+  const program = getProgram(programId);
   const day = program.days.find((d) => d.id === dayId);
-  const entry = getActiveProgress(state).completedDays.find((d) => d.dayId === dayId);
+  const entry = getProgramProgress(state, programId).completedDays.find((d) => d.dayId === dayId);
   if (!day || !entry) return false;
   return day.exercises.every((e) => entry.exercisesCompleted.includes(e.id));
+}
+
+export function getProgramCompletedCount(state: AppState, programId: string): number {
+  const program = getProgram(programId);
+  return program.days.filter((d) => isProgramDayCompleted(state, programId, d.id)).length;
+}
+
+export function getProgramCompletionPercent(state: AppState, programId: string): number {
+  const total = getProgram(programId).days.length;
+  if (total === 0) return 0;
+  return Math.round((getProgramCompletedCount(state, programId) / total) * 100);
+}
+
+export function isDayCompleted(state: AppState, dayId: string): boolean {
+  return isProgramDayCompleted(state, state.activeProgramId, dayId);
 }
 
 export function hasDayProgress(state: AppState, dayId: string): boolean {
@@ -168,8 +223,7 @@ export function hasDayProgress(state: AppState, dayId: string): boolean {
 }
 
 export function getCompletedCount(state: AppState): number {
-  const program = getProgram(state.activeProgramId);
-  return program.days.filter((d) => isDayCompleted(state, d.id)).length;
+  return getProgramCompletedCount(state, state.activeProgramId);
 }
 
 export function getCompletionPercent(state: AppState, totalDays: number): number {
@@ -440,8 +494,11 @@ function recalcCurrentDayIndex(programId: string, completedDays: DayProgress[]):
 
 /** Izbriše napredek dneva izziva (vaje + oznaka opravljeno). */
 export async function clearDayProgress(state: AppState, dayId: string): Promise<AppState> {
-  const programId = state.activeProgramId;
-  const progress = getActiveProgress(state);
+  const owner =
+    allPrograms.find((p) => p.days.some((d) => d.id === dayId)) ??
+    getProgram(state.activeProgramId);
+  const programId = owner.id;
+  const progress = getProgramProgress(state, programId);
   const completedDays = progress.completedDays.filter((d) => d.dayId !== dayId);
   const updatedProgress: UserProgress = {
     ...progress,
@@ -483,28 +540,29 @@ function activityDayLabel(dateKey: string): string {
   });
 }
 
-/** Dnevnik: izziv + steza, združeno po koledarskih dnevih (novejše najprej). */
+/** Dnevnik: vsi programi + steza + jutro, združeno po koledarskih dnevih (novejše najprej). */
 export function getActivityLog(state: AppState): ActivityDayGroup[] {
-  const program = getProgram(state.activeProgramId);
-  const progress = getActiveProgress(state);
   const items: ActivityLogItem[] = [];
 
-  for (const dayProg of progress.completedDays) {
-    if (dayProg.exercisesCompleted.length === 0) continue;
-    const day = program.days.find((d) => d.id === dayProg.dayId);
-    const allDone = day
-      ? day.exercises.every((e) => dayProg.exercisesCompleted.includes(e.id))
-      : false;
-    items.push({
-      id: `challenge-${dayProg.dayId}`,
-      kind: 'challenge',
-      title: day ? `Dan ${day.day}: ${day.title}` : dayProg.dayId,
-      subtitle: allDone
-        ? `Izziv · ${dayProg.exercisesCompleted.length} korakov`
-        : `Izziv · ${dayProg.exercisesCompleted.length}/${day?.exercises.length ?? '?'} korakov`,
-      completedAt: dayProg.completedAt,
-      dayId: dayProg.dayId,
-    });
+  for (const program of allPrograms) {
+    const progress = getProgramProgress(state, program.id);
+    for (const dayProg of progress.completedDays) {
+      if (dayProg.exercisesCompleted.length === 0) continue;
+      const day = program.days.find((d) => d.id === dayProg.dayId);
+      const allDone = day
+        ? day.exercises.every((e) => dayProg.exercisesCompleted.includes(e.id))
+        : false;
+      items.push({
+        id: `${program.id}-${dayProg.dayId}`,
+        kind: 'challenge',
+        title: day ? `Dan ${day.day}: ${day.title}` : dayProg.dayId,
+        subtitle: allDone
+          ? `${program.name} · ${dayProg.exercisesCompleted.length} korakov`
+          : `${program.name} · ${dayProg.exercisesCompleted.length}/${day?.exercises.length ?? '?'} korakov`,
+        completedAt: dayProg.completedAt,
+        dayId: dayProg.dayId,
+      });
+    }
   }
 
   for (const tm of getTreadmillCompletions(state)) {
@@ -576,9 +634,12 @@ function getActiveDateKeys(state: AppState): Map<string, number> {
     counts.set(key, (counts.get(key) ?? 0) + 1);
   };
 
-  for (const dayProg of getActiveProgress(state).completedDays) {
-    if (dayProg.exercisesCompleted.length === 0) continue;
-    bump(dayProg.completedAt);
+  for (const program of allPrograms) {
+    const progress = getProgramProgress(state, program.id);
+    for (const dayProg of progress.completedDays) {
+      if (dayProg.exercisesCompleted.length === 0) continue;
+      bump(dayProg.completedAt);
+    }
   }
   for (const tm of getTreadmillCompletions(state)) {
     bump(tm.completedAt);
@@ -734,14 +795,15 @@ export function getWeeklySummary(state: AppState): WeeklySummary {
   treadmillKm = Math.round(treadmillKm * 10) / 10;
 
   let challengeDays = 0;
-  const program = getProgram(state.activeProgramId);
-  for (const dayProg of getActiveProgress(state).completedDays) {
-    const key = formatLocalDateKey(dayProg.completedAt);
-    if (!weekKeys.has(key)) continue;
-    const day = program.days.find((d) => d.id === dayProg.dayId);
-    if (!day) continue;
-    if (day.exercises.every((e) => dayProg.exercisesCompleted.includes(e.id))) {
-      challengeDays += 1;
+  for (const program of allPrograms) {
+    for (const dayProg of getProgramProgress(state, program.id).completedDays) {
+      const key = formatLocalDateKey(dayProg.completedAt);
+      if (!weekKeys.has(key)) continue;
+      const day = program.days.find((d) => d.id === dayProg.dayId);
+      if (!day) continue;
+      if (day.exercises.every((e) => dayProg.exercisesCompleted.includes(e.id))) {
+        challengeDays += 1;
+      }
     }
   }
 

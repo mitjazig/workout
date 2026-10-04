@@ -5,10 +5,10 @@
 }
 
 .tm-hero {
-  padding: var(--space-8) var(--space-5);
+  padding: var(--space-6) var(--page-gutter);
   border-radius: 0;
-  margin: calc(-1 * var(--space-5)) calc(-1 * var(--space-4)) 0;
-  width: calc(100% + 2 * var(--space-4));
+  margin: calc(-1 * var(--space-4)) calc(-1 * var(--page-gutter)) 0;
+  width: calc(100% + 2 * var(--page-gutter));
   background: #000000;
   border: none;
   color: #ffffff;
@@ -26,10 +26,34 @@
 
 .tm-hero-title {
   margin: 0 0 var(--space-3);
-  font-size: clamp(2.6rem, 11vw, 3.4rem);
+  font-size: clamp(2rem, 9vw, 3rem);
   font-weight: 400;
   letter-spacing: 0.02em;
   color: #ffffff;
+  line-height: 1;
+}
+
+@media (max-width: 480px) {
+  .tm-page {
+    gap: var(--space-4);
+  }
+
+  .tm-hero {
+    padding: var(--space-5) var(--page-gutter);
+  }
+
+  .tm-hero-stats {
+    gap: var(--space-4);
+    margin-top: var(--space-4);
+  }
+
+  .tm-hero-stats strong {
+    font-size: 1.5rem;
+  }
+
+  .tm-quick {
+    padding: var(--space-4) 0;
+  }
 }
 
 .tm-hero-lede {

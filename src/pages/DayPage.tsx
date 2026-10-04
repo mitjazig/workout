@@ -1,8 +1,8 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useParams, Link, Navigate } from 'react-router-dom';
 import type { AppState, CardioMode, TrainingDay, WorkoutDifficulty } from '../types';
-import { getDayById, getProgram } from '../data/programs';
-import { dayHasTreadmillCardio } from '../data/challengeProgram';
+import { findDayById } from '../data/programs';
+import { challengeProgram, dayHasTreadmillCardio } from '../data/challengeProgram';
 import { categoryLabel } from '../data/categories';
 import { getDayVideo } from '../data/dayVideos';
 import {
@@ -27,6 +27,7 @@ interface DayPageProps {
   onClearDay: (dayId: string) => void;
   onCardioModeChange: (mode: CardioMode) => void;
   onDifficultyChange: (difficulty: WorkoutDifficulty) => void;
+  onSelectProgram: (programId: string) => void | Promise<void>;
 }
 
 function IconBack() {
@@ -58,6 +59,7 @@ export default function DayPage({
   onClearDay,
   onCardioModeChange,
   onDifficultyChange,
+  onSelectProgram,
 }: DayPageProps) {
   const { dayId } = useParams<{ dayId: string }>();
   const [previewOpen, setPreviewOpen] = useState(false);
@@ -65,29 +67,40 @@ export default function DayPage({
   const [sessionDay, setSessionDay] = useState<TrainingDay | null>(null);
   const [confirmClear, setConfirmClear] = useState(false);
   const [shareStatus, setShareStatus] = useState<string | null>(null);
-  const program = getProgram(state.activeProgramId);
-  const day = dayId ? getDayById(program.id, dayId) : undefined;
+
+  const resolved = dayId ? findDayById(dayId) : null;
+  const program = resolved?.program;
+  const day = resolved?.day;
+
+  // Če URL kaže na dan drugega programa, uskladi activeProgramId (napredek mora biti pravi).
+  useEffect(() => {
+    if (program && program.id !== state.activeProgramId) {
+      void onSelectProgram(program.id);
+    }
+  }, [program, state.activeProgramId, onSelectProgram]);
 
   const scaledPreview = useMemo(() => {
     if (!day) return null;
     return scaleTrainingDay(day, state.difficulty);
   }, [day, state.difficulty]);
 
-  if (!day || !scaledPreview) return <Navigate to="/" replace />;
+  if (!day || !program || !scaledPreview) return <Navigate to="/program" replace />;
 
   const completedExercises = getDayExerciseProgress(state, day.id);
   const dayDone = isDayCompleted(state, day.id);
   const hasProgress = hasDayProgress(state, day.id);
   const allExercisesDone = day.exercises.every((e) => completedExercises.includes(e.id));
-  const dayVideo = getDayVideo(day.day);
-  const showCardioToggle = dayHasTreadmillCardio(day);
-  const useTreadmill = state.cardioMode === 'treadmill';
+  const isChallenge = program.id === challengeProgram.id;
+  const dayVideo = isChallenge ? getDayVideo(day.day) : undefined;
+  const showCardioToggle = isChallenge && dayHasTreadmillCardio(day);
+  const useTreadmill = showCardioToggle && state.cardioMode === 'treadmill';
   const stats = getProgressStats(state);
+  const totalDays = program.days.length;
   const equipment = showCardioToggle
     ? useTreadmill
       ? 'Steza'
       : 'Zunaj'
-    : 'Doma';
+    : program.equipment?.[0] ?? 'Doma';
 
   const handleCompleteDay = () => {
     onCompleteDay(day.id, day.exercises.map((e) => e.id));
@@ -130,7 +143,7 @@ export default function DayPage({
     <>
       {previewOpen && (
         <WorkoutPreview
-          kicker={`Dan ${day.day}/10`}
+          kicker={`Dan ${day.day}/${totalDays}`}
           title={day.title}
           summary={day.summary}
           meta={[
@@ -166,14 +179,14 @@ export default function DayPage({
       )}
 
       <div className="day-page">
-        <Link to="/" className="back-link">
+        <Link to="/program" className="back-link">
           <IconBack />
           Nazaj
         </Link>
 
         <header className="day-header">
           <div className="day-meta">
-            <span className="day-meta-chip">Dan {day.day}/10</span>
+            <span className="day-meta-chip">Dan {day.day}/{totalDays}</span>
             <span className="day-meta-chip">{categoryLabel(day.focus)}</span>
             <span className="day-meta-chip">~{day.estimatedMinutes} min</span>
           </div>

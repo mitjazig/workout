@@ -103,19 +103,21 @@
   min-height: 0;
   display: flex;
   flex-direction: column;
-  padding: var(--space-4) var(--space-5);
+  padding: var(--space-3) var(--page-gutter);
   gap: var(--space-3);
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 /* Exercise name */
 .session-name {
   font-family: var(--font-display);
-  font-size: clamp(2rem, 8vw, 2.6rem);
+  font-size: clamp(1.6rem, 7vw, 2.3rem);
   font-weight: 400;
   margin: 0;
   color: var(--color-text);
-  line-height: 0.95;
+  line-height: 1.05;
   letter-spacing: 0.02em;
   text-align: center;
   text-transform: uppercase;
@@ -238,7 +240,7 @@
 
 .session-complete-btn {
   flex: 1;
-  min-height: 56px;
+  min-height: 50px;
   border-radius: var(--radius);
   font-size: var(--font-size-sm);
   font-weight: 700;
@@ -282,8 +284,8 @@
 }
 
 .session-next-btn {
-  min-height: 56px;
-  min-width: 72px;
+  min-height: 50px;
+  min-width: 64px;
   border-radius: var(--radius);
   font-size: var(--font-size-base);
   font-weight: 800;
@@ -320,8 +322,8 @@
 .session-done-screen p { margin: 0; color: var(--color-text-muted); }
 
 .session-done-close {
-  min-height: 56px;
-  padding: 0 var(--space-8);
+  min-height: 50px;
+  padding: 0 var(--space-6);
   border-radius: var(--radius);
   background: var(--color-ink);
   color: var(--color-on-ink);
@@ -351,3 +353,120 @@
   stroke-linecap: round;
   stroke-linejoin: round;
 }
+
+/* Tai Chi calm session */
+.session-taichi .session-body {
+  gap: var(--space-3);
+  overflow-x: hidden;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: var(--space-3) var(--space-4);
+}
+
+.session-english {
+  margin: calc(-1 * var(--space-2)) 0 var(--space-2);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-text-faint);
+  text-align: center;
+  overflow-wrap: anywhere;
+}
+
+.session-taichi .session-name {
+  font-size: clamp(1.55rem, 6.5vw, 2.2rem);
+  text-transform: none;
+  letter-spacing: 0.01em;
+  line-height: 1.1;
+  overflow-wrap: anywhere;
+}
+
+.session-taichi-media {
+  flex: 0 0 auto;
+  max-width: 280px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+@media (max-width: 480px) {
+  .session-taichi .session-body {
+    gap: var(--space-2);
+    padding: var(--space-3);
+  }
+
+  .session-taichi-media {
+    max-width: 220px;
+  }
+
+  .session-breathing {
+    padding: var(--space-2) var(--space-3);
+  }
+
+  .session-breathing p {
+    font-size: 0.8rem;
+    line-height: 1.4;
+  }
+}
+
+.session-breathing {
+  padding: var(--space-3) var(--space-4);
+  border-left: 3px solid var(--color-accent);
+  background: var(--color-accent-soft);
+}
+
+.session-breathing-label {
+  margin: 0 0 var(--space-1);
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+}
+
+.session-breathing p {
+  margin: 0;
+  font-size: var(--font-size-sm);
+  color: var(--color-text);
+  line-height: 1.5;
+}
+
+.session-howto {
+  border-top: 1px solid var(--color-border-light);
+  padding-top: var(--space-3);
+  font-size: var(--font-size-sm);
+}
+
+.session-howto summary {
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  list-style: none;
+}
+
+.session-howto summary::-webkit-details-marker {
+  display: none;
+}
+
+.session-howto ol,
+.session-howto ul {
+  margin: var(--space-3) 0 0;
+  padding-left: 1.2rem;
+  color: var(--color-text-muted);
+  line-height: 1.55;
+}
+
+.session-timer.calm .session-timer-time {
+  font-variant-numeric: tabular-nums;
+}
+
+.session-timer-calm-note {
+  margin: 0 0 var(--space-2);
+  text-align: center;
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+}
+

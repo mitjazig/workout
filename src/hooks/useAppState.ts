@@ -75,11 +75,10 @@ export function useAppState() {
   }, []);
 
   const selectProgram = useCallback(async (programId: string) => {
-    setState((prev) => {
-      if (!prev) return prev;
-      setActiveProgram(prev, programId).then(setState);
-      return prev;
-    });
+    const prev = stateRef.current;
+    if (!prev) return;
+    const next = await setActiveProgram(prev, programId);
+    setState(next);
   }, []);
 
   const reset = useCallback(async (programId?: string) => {

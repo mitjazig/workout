@@ -1,0 +1,117 @@
+.program-card {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: var(--space-2);
+  width: 100%;
+  padding: var(--space-4) 0;
+  border: none;
+  border-bottom: 1px solid var(--color-border-light);
+  background: transparent;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+  font-family: var(--font);
+}
+
+@media (max-width: 480px) {
+  .program-card {
+    padding: var(--space-3) 0;
+    gap: var(--space-2);
+  }
+
+  .program-card-title {
+    font-size: clamp(1.55rem, 7vw, 2rem);
+  }
+
+  .program-card-cta {
+    min-height: 40px;
+  }
+}
+
+.program-card:first-child {
+  border-top: 1px solid var(--color-border-light);
+}
+
+.program-card:active {
+  opacity: 0.85;
+}
+
+.program-card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.program-card-badge {
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+}
+
+.program-card-duration {
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-text-faint);
+}
+
+.program-card-title {
+  margin: 0;
+  font-size: clamp(1.8rem, 7vw, 2.4rem);
+  line-height: 0.95;
+}
+
+.program-card-desc {
+  margin: 0;
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+  line-height: 1.5;
+  max-width: 42ch;
+}
+
+.program-card-progress {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.program-card-progress-meta {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+.program-card-meta {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: var(--space-2);
+  font-size: 0.75rem;
+  color: var(--color-text-faint);
+}
+
+.program-card-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  align-self: flex-start;
+  min-height: 44px;
+  padding: 0 var(--space-5);
+  margin-top: var(--space-1);
+  background: var(--color-ink);
+  color: var(--color-on-ink);
+  border-radius: var(--radius);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}

@@ -1,7 +1,7 @@
 .home-page {
   display: flex;
   flex-direction: column;
-  gap: var(--space-6);
+  gap: var(--space-5);
 }
 
 .home-page > .home-hero {
@@ -144,11 +144,11 @@
   position: relative;
   isolation: isolate;
   overflow: hidden;
-  padding: var(--space-10) var(--space-5) var(--space-8);
+  padding: var(--space-8) var(--space-4) var(--space-6);
   border-radius: 0;
-  margin: calc(-1 * var(--space-5)) calc(-1 * var(--space-4)) 0;
-  width: calc(100% + 2 * var(--space-4));
-  min-height: min(52vh, 420px);
+  margin: calc(-1 * var(--space-4)) calc(-1 * var(--page-gutter)) 0;
+  width: calc(100% + 2 * var(--page-gutter));
+  min-height: min(38vh, 300px);
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
@@ -158,6 +158,29 @@
     linear-gradient(145deg, #1a1a1a 0%, #000000 55%, #111111 100%);
   border: none;
   box-shadow: none;
+}
+
+@media (max-width: 480px) {
+  .home-page {
+    gap: var(--space-4);
+  }
+
+  .home-hero {
+    margin-left: calc(-1 * var(--page-gutter));
+    margin-right: calc(-1 * var(--page-gutter));
+    width: calc(100% + 2 * var(--page-gutter));
+    min-height: min(28vh, 210px);
+    padding: var(--space-5) var(--page-gutter) var(--space-4);
+  }
+
+  .home-brand {
+    font-size: clamp(2.4rem, 14vw, 3.2rem);
+  }
+
+  .home-lede {
+    margin-bottom: var(--space-4);
+    font-size: var(--font-size-sm);
+  }
 }
 
 .home-hero-aurora {
@@ -555,3 +578,57 @@
 .day-done .day-item-title {
   color: var(--color-success);
 }
+
+/* Workout Hub */
+.hub-hero {
+  min-height: min(30vh, 240px);
+}
+
+@media (max-width: 480px) {
+  .hub-hero {
+    min-height: min(26vh, 200px);
+  }
+
+  .day-item {
+    min-height: 64px;
+    padding: var(--space-3) 0;
+    gap: var(--space-3);
+  }
+
+  .day-number {
+    width: 34px;
+    height: 34px;
+  }
+}
+
+.hub-programs-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: var(--space-2);
+}
+
+.hub-programs-head h2 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.hub-programs-head span {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: var(--color-accent);
+}
+
+.hub-program-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.home-page > .hub-programs {
+  animation: rise 0.7s var(--ease-out) 0.06s both;
+}
+
