@@ -9,6 +9,7 @@ import {
   wasMorningDoneToday,
 } from '../services/progress';
 import ProgramCard from '../components/ProgramCard';
+import PwaInstallButton from '../components/PwaInstallButton';
 import WeeklySummaryCard from '../components/WeeklySummary';
 import './HomePage.css';
 
@@ -58,6 +59,8 @@ export default function HomePage({ state, onSelectProgram }: HomePageProps) {
           ))}
         </div>
       </section>
+
+      <PwaInstallButton variant="banner" />
 
       <section className="home-story">
         <div className="home-story-top">

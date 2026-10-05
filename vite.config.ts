@@ -12,9 +12,9 @@ export default defineConfig({
       registerType: 'autoUpdate',
       includeAssets: ['favicon.svg', 'icons.svg', '.nojekyll'],
       manifest: {
-        name: 'Izziv 10',
-        short_name: 'Izziv 10',
-        description: '10-dnevni vadbeni izziv doma, brez opreme',
+        name: 'Workout',
+        short_name: 'Workout',
+        description: 'Vadbene poti doma: Izziv 10, Chair Tai Chi, jutro in steza.',
         theme_color: '#111111',
         background_color: '#ffffff',
         display: 'standalone',

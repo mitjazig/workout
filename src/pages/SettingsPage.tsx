@@ -4,6 +4,7 @@ import { getProgram } from '../data/programs';
 import { requestNotificationPermission } from '../services/reminders';
 import { unlockAudio } from '../utils/feedback';
 import CardioModeToggle from '../components/CardioModeToggle';
+import PwaInstallButton from '../components/PwaInstallButton';
 import './SettingsPage.css';
 
 const DAY_LABELS = ['Ned', 'Pon', 'Tor', 'Sre', 'Čet', 'Pet', 'Sob'];
@@ -189,6 +190,11 @@ export default function SettingsPage({
         <p className="settings-hint">
           Ponastavitev vpliva samo na aktivni program. Drugi programi ostanejo. Napredek je lokalno na tej napravi.
         </p>
+      </section>
+
+      <section className="settings-section">
+        <p className="settings-section-title">Aplikacija</p>
+        <PwaInstallButton variant="row" />
       </section>
 
       <section className="settings-section">
