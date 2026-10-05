@@ -170,6 +170,11 @@ export default function DayPage({
           day={sessionDay}
           completedExercises={completedExercises}
           onCompleteExercise={(exerciseId) => onCompleteExercise(day.id, exerciseId)}
+          onCompleteDay={() => {
+            onCompleteDay(day.id, day.exercises.map((e) => e.id));
+            setSessionOpen(false);
+            setSessionDay(null);
+          }}
           onClose={() => {
             setSessionOpen(false);
             setSessionDay(null);
@@ -178,7 +183,7 @@ export default function DayPage({
         />
       )}
 
-      <div className="day-page">
+      <div className={`day-page ${!dayDone ? 'has-sticky-cta' : ''}`}>
         <Link to="/program" className="back-link">
           <IconBack />
           Nazaj
@@ -222,14 +227,28 @@ export default function DayPage({
         </header>
 
         {!dayDone && (
-          <button
-            type="button"
-            className="start-session-btn"
-            onClick={() => setPreviewOpen(true)}
-          >
-            <IconPlay />
-            Začni dan
-          </button>
+          <div className="day-primary-actions">
+            <button
+              type="button"
+              className="start-session-btn"
+              onClick={() => setPreviewOpen(true)}
+            >
+              <IconPlay />
+              Začni dan
+            </button>
+            <button
+              type="button"
+              className="day-confirm-btn"
+              onClick={handleCompleteDay}
+            >
+              Potrdi dan kot opravljen
+            </button>
+            <p className="hint day-confirm-hint">
+              {allExercisesDone
+                ? 'Vsi koraki so označeni – potrdi dan.'
+                : 'Lahko potrdiš dan takoj, tudi če nisi označil vsakega koraka.'}
+            </p>
+          </div>
         )}
 
         {dayVideo && <DayVideo video={dayVideo} />}
@@ -248,23 +267,19 @@ export default function DayPage({
             />
           ))}
         </div>
-
-        {!dayDone && (
-          <div className="day-complete-section">
-            <button
-              type="button"
-              className="btn-primary"
-              onClick={handleCompleteDay}
-              disabled={!allExercisesDone}
-            >
-              Označi celoten dan kot opravljen
-            </button>
-            {!allExercisesDone && (
-              <p className="hint">Najprej opravite vse korake ali jih označite ročno.</p>
-            )}
-          </div>
-        )}
       </div>
+
+      {!dayDone && (
+        <div className="day-sticky-cta" role="region" aria-label="Potrditev dneva">
+          <button
+            type="button"
+            className="day-sticky-cta-btn"
+            onClick={handleCompleteDay}
+          >
+            Potrdi dan kot opravljen
+          </button>
+        </div>
+      )}
     </>
   );
 }

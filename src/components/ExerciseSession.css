@@ -325,8 +325,8 @@
   min-height: 50px;
   padding: 0 var(--space-6);
   border-radius: var(--radius);
-  background: var(--color-ink);
-  color: var(--color-on-ink);
+  background: var(--color-accent);
+  color: var(--color-on-accent);
   font-size: var(--font-size-sm);
   font-weight: 700;
   letter-spacing: 0.1em;
@@ -341,7 +341,7 @@
   transition: background 0.15s, transform 0.1s;
 }
 
-.session-done-close:hover { background: #000000; }
+.session-done-close:hover { background: var(--color-accent-bright); }
 .session-done-close:active { transform: scale(0.97); }
 
 .session-done-close svg {
@@ -352,6 +352,21 @@
   stroke-width: 2.5;
   stroke-linecap: round;
   stroke-linejoin: round;
+}
+
+.session-done-secondary {
+  min-height: 44px;
+  padding: 0 var(--space-5);
+  border-radius: var(--radius);
+  background: transparent;
+  color: var(--color-text-muted);
+  border: 1.5px solid var(--color-border);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  font-family: var(--font);
 }
 
 /* Tai Chi calm session */

@@ -288,18 +288,30 @@ export async function markExerciseComplete(
   exerciseId: string,
 ): Promise<AppState> {
   const programId = state.activeProgramId;
+  const program = getProgram(programId);
   const progress = getActiveProgress(state);
-  const day = progress.completedDays.find((d) => d.dayId === dayId);
-  const completed = day?.exercisesCompleted ?? [];
+  const dayProg = progress.completedDays.find((d) => d.dayId === dayId);
+  const completed = dayProg?.exercisesCompleted ?? [];
   if (completed.includes(exerciseId)) return state;
 
   const now = new Date().toISOString();
   const without = progress.completedDays.filter((d) => d.dayId !== dayId);
+  const exercisesCompleted = [...completed, exerciseId];
   const entry: DayProgress = {
     dayId,
-    completedAt: day?.completedAt ?? now,
-    exercisesCompleted: [...completed, exerciseId],
+    completedAt: dayProg?.completedAt ?? now,
+    exercisesCompleted,
   };
+
+  const trainingDay = program.days.find((d) => d.id === dayId);
+  const allDone =
+    !!trainingDay &&
+    trainingDay.exercises.every((e) => exercisesCompleted.includes(e.id));
+  const dayIndex = program.days.findIndex((d) => d.id === dayId);
+  const nextIndex =
+    allDone && dayIndex >= 0 && dayIndex >= progress.currentDayIndex
+      ? Math.min(dayIndex + 1, program.days.length - 1)
+      : progress.currentDayIndex;
 
   const updated: AppState = {
     ...state,
@@ -308,6 +320,7 @@ export async function markExerciseComplete(
       [programId]: {
         ...progress,
         completedDays: [...without, entry],
+        currentDayIndex: nextIndex,
         lastActiveAt: now,
       },
     },

@@ -10,6 +10,7 @@ interface Props {
   day: TrainingDay;
   completedExercises: string[];
   onCompleteExercise: (exerciseId: string) => void;
+  onCompleteDay?: () => void;
   onClose: () => void;
   useTreadmill?: boolean;
 }
@@ -67,6 +68,7 @@ export default function ExerciseSession({
   day,
   completedExercises,
   onCompleteExercise,
+  onCompleteDay,
   onClose,
   useTreadmill = false,
 }: Props) {
@@ -116,9 +118,20 @@ export default function ExerciseSession({
           <div className="session-done-icon">✓</div>
           <h2>{isTaiChi || day.focus === 'mobility' ? 'Mirno zaključeno' : 'Odlično!'}</h2>
           <p>Vsi koraki za danes so opravljeni.</p>
-          <button className="session-done-close" onClick={onClose}>
-            <IconCheck /> Nazaj na dan
-          </button>
+          {onCompleteDay ? (
+            <button type="button" className="session-done-close" onClick={onCompleteDay}>
+              <IconCheck /> Potrdi dan kot opravljen
+            </button>
+          ) : (
+            <button type="button" className="session-done-close" onClick={onClose}>
+              <IconCheck /> Nazaj na dan
+            </button>
+          )}
+          {onCompleteDay && (
+            <button type="button" className="session-done-secondary" onClick={onClose}>
+              Nazaj na dan
+            </button>
+          )}
         </div>
       </div>
     );
