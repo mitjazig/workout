@@ -4,6 +4,25 @@
   animation: rise 0.55s var(--ease-out) both;
 }
 
+.week-summary.compact {
+  padding: var(--space-3) 0;
+}
+
+.week-summary.compact .week-summary-head {
+  margin-bottom: var(--space-2);
+}
+
+.week-summary.compact .week-summary-head h3 {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  font-family: var(--font);
+}
+
+.week-summary.compact .week-summary-grid strong {
+  font-size: 1.15rem;
+}
+
 .week-summary-head {
   display: flex;
   align-items: baseline;

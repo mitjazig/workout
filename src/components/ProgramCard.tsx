@@ -17,8 +17,8 @@ function countCompleted(program: Program, progress: UserProgress): number {
 }
 
 function ctaLabel(done: number, total: number): string {
-  if (done <= 0) return 'Začni program';
-  if (done >= total) return 'Ponovi program';
+  if (done <= 0) return 'Začni';
+  if (done >= total) return 'Ponovi';
   return 'Nadaljuj';
 }
 
@@ -28,53 +28,33 @@ export default function ProgramCard({ program, progress, onClick }: ProgramCardP
   const percent = total === 0 ? 0 : Math.round((done / total) * 100);
   const nextIndex = Math.min(progress.currentDayIndex, Math.max(0, total - 1));
   const nextDay = getDayByIndex(program.id, nextIndex);
-  const equipment =
-    program.equipment && program.equipment.length > 0
-      ? program.equipment.join(' · ')
-      : 'Brez opreme';
   const duration = program.durationLabel ?? `${total} dni`;
 
   return (
     <button type="button" className="program-card" onClick={onClick}>
-      <div className="program-card-top">
-        {program.badge && <span className="program-card-badge">{program.badge}</span>}
-        <span className="program-card-duration">{duration}</span>
-      </div>
-
-      <h2 className="program-card-title">{program.name}</h2>
-      <p className="program-card-desc">
-        {program.shortDescription ?? program.description}
-      </p>
-
-      <div className="program-card-progress">
-        <div className="program-card-progress-meta">
-          <span>
-            Dan {done} / {total}
-          </span>
-          <span>{percent}%</span>
+      <div className="program-card-main">
+        <div className="program-card-text">
+          <div className="program-card-top">
+            <h2 className="program-card-title">{program.name}</h2>
+            <span className="program-card-duration">{duration}</span>
+          </div>
+          <p className="program-card-meta">
+            {done}/{total} dni · {percent}%
+            {nextDay && done < total && ` · Dan ${nextDay.day}`}
+            {done >= total && ' · Končano'}
+          </p>
         </div>
-        <div
-          className="progress-bar"
-          role="progressbar"
-          aria-valuenow={percent}
-          aria-valuemin={0}
-          aria-valuemax={100}
-        >
-          <div className="progress-bar-fill" style={{ width: `${percent}%` }} />
-        </div>
+        <span className="program-card-cta">{ctaLabel(done, total)}</span>
       </div>
-
-      <div className="program-card-meta">
-        <span>{equipment}</span>
-        {nextDay && done < total && (
-          <span>
-            {done === 0 ? 'Začni' : 'Nadaljuj'}: Dan {nextDay.day}
-          </span>
-        )}
-        {done >= total && <span>Program končan</span>}
+      <div
+        className="progress-bar"
+        role="progressbar"
+        aria-valuenow={percent}
+        aria-valuemin={0}
+        aria-valuemax={100}
+      >
+        <div className="progress-bar-fill" style={{ width: `${percent}%` }} />
       </div>
-
-      <span className="program-card-cta">{ctaLabel(done, total)}</span>
     </button>
   );
 }

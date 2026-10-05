@@ -32,20 +32,9 @@ export default function HomePage({ state, onSelectProgram }: HomePageProps) {
 
   return (
     <div className="home-page home-hub">
-      <section className="home-hero hub-hero" aria-label="Workout">
-        <div className="home-hero-aurora" aria-hidden="true">
-          <span className="home-orb home-orb-a" />
-          <span className="home-orb home-orb-b" />
-          <span className="home-orb home-orb-c" />
-        </div>
-        <p className="home-kicker">Vadbene poti</p>
-        <h1 className="home-brand">Workout</h1>
-        <p className="home-lede">Izberi program. Napredek ostane ločen.</p>
-      </section>
-
       <section className="hub-programs" aria-label="Moji programi">
         <div className="hub-programs-head">
-          <h2>Moji programi</h2>
+          <h2>Programi</h2>
           <span>{allPrograms.length}</span>
         </div>
         <div className="hub-program-list">
@@ -60,39 +49,34 @@ export default function HomePage({ state, onSelectProgram }: HomePageProps) {
         </div>
       </section>
 
-      <PwaInstallButton variant="banner" />
-
-      <section className="home-story">
-        <div className="home-story-top">
-          <p className="home-story-kicker">Posebna zgodba</p>
-          {morningToday && <span className="home-story-done">Danes ✓</span>}
-        </div>
-        <h2 className="home-story-title">Jutranji blok</h2>
-        <p className="home-story-text">
-          Zbudi telo (5 min) ali Za srce (2 min) – nato hoja. Ločeno od programov.
-        </p>
-        <Link to="/morning" className="home-story-cta">
-          Odpri jutranjo zgodbo
-        </Link>
-      </section>
+      <Link to="/morning" className="home-link-row">
+        <span className="home-link-copy">
+          <strong>Jutranji blok</strong>
+          <small>5 min ali 2 min · nato hoja</small>
+        </span>
+        {morningToday ? (
+          <span className="home-link-done">Danes ✓</span>
+        ) : (
+          <span className="home-link-chevron" aria-hidden>
+            →
+          </span>
+        )}
+      </Link>
 
       {!activeToday && (
-        <section className="home-nudge" aria-live="polite">
-          <p className="home-nudge-kicker">Danes še ni vadbe</p>
-          <p className="home-nudge-text">
-            {stats.currentStreak > 0
-              ? `Niz ${stats.currentStreak} ${stats.currentStreak === 1 ? 'dan' : 'dni'} – ohrani ga s programom ali stezo.`
-              : 'Začni danes – 15–30 minut zadošča.'}
-          </p>
-          <div className="home-nudge-actions">
-            <Link to="/treadmill" className="home-nudge-link secondary">
-              Steza
-            </Link>
-          </div>
-        </section>
+        <p className="home-nudge-line" aria-live="polite">
+          Danes še ni vadbe
+          {stats.currentStreak > 0
+            ? ` · niz ${stats.currentStreak}`
+            : ''}
+          {' · '}
+          <Link to="/treadmill">Steza</Link>
+        </p>
       )}
 
-      <WeeklySummaryCard summary={week} />
+      <PwaInstallButton variant="row" />
+
+      <WeeklySummaryCard summary={week} compact />
     </div>
   );
 }

@@ -142,24 +142,26 @@ export default function ProgressPage({
       <h2>Vaš napredek</h2>
       <p className="progress-program-name">{program.name}</p>
 
-      <section className="card stats-card">
-        <div className="stat-big">{stats.challengePercent}%</div>
-        <p className="stat-big-label">Izziv opravljeno</p>
-        <div className="stats-row">
-          <div className="stat">
-            <span className="stat-value">{stats.challengeDaysDone}</span>
-            <span className="stat-label">Dni</span>
+      <section className="stats-summary" aria-label="Povzetek">
+        <div className="stats-summary-main">
+          <span className="stats-summary-pct">{stats.challengePercent}%</span>
+          <span className="stats-summary-label">Izziv opravljeno</span>
+        </div>
+        <div className="stats-summary-row">
+          <div className="stats-summary-item">
+            <strong>{stats.challengeDaysDone}</strong>
+            <span>Dni</span>
           </div>
-          <div className="stat">
-            <span className="stat-value">{stats.treadmillSessions}</span>
-            <span className="stat-label">Steza</span>
+          <div className="stats-summary-item">
+            <strong>{stats.treadmillSessions}</strong>
+            <span>Steza</span>
           </div>
-          <div className="stat">
-            <span className="stat-value">{formatKm(stats.treadmillKm)}</span>
-            <span className="stat-label">Km</span>
+          <div className="stats-summary-item">
+            <strong>{formatKm(stats.treadmillKm)}</strong>
+            <span>Km</span>
           </div>
         </div>
-        <p className="stat-date">
+        <p className="stats-summary-date">
           Začetek: {new Date(progress.startedAt).toLocaleDateString('sl-SI')}
           {stats.treadmillMinutes > 0 ? ` · ${stats.treadmillMinutes} min steza` : ''}
         </p>

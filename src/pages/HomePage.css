@@ -1,270 +1,81 @@
 .home-page {
   display: flex;
   flex-direction: column;
-  gap: var(--space-5);
-}
-
-.home-page > .home-hero {
-  animation: rise 0.7s var(--ease-out) both;
-}
-
-.home-page > .home-story {
-  animation: rise 0.7s var(--ease-out) 0.05s both;
-}
-
-.home-page > .home-nudge {
-  animation: rise 0.7s var(--ease-out) 0.08s both;
-}
-
-.home-page > .home-today {
-  animation: rise 0.7s var(--ease-out) 0.12s both;
-}
-
-.home-story {
-  padding: var(--space-5) 0 0;
-  border-top: 1px solid var(--color-border-light);
-}
-
-.home-story-top {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
   gap: var(--space-3);
-  margin-bottom: var(--space-2);
-}
-
-.home-story-kicker {
-  margin: 0;
-  font-size: 0.68rem;
-  font-weight: 700;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--color-accent);
-}
-
-.home-story-done {
-  font-size: 0.62rem;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--color-success);
-}
-
-.home-story-title {
-  margin: 0 0 var(--space-2);
-  font-size: clamp(1.8rem, 7vw, 2.3rem);
-}
-
-.home-story-text {
-  margin: 0 0 var(--space-4);
-  font-size: var(--font-size-sm);
-  color: var(--color-text-muted);
-  max-width: 36ch;
-}
-
-.home-story-cta {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 48px;
-  padding: 0 var(--space-5);
-  background: transparent;
-  color: var(--color-ink);
-  border: 1.5px solid var(--color-ink);
-  border-radius: var(--radius);
-  font-size: 0.72rem;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  text-decoration: none;
-}
-
-.home-story-cta:hover {
-  text-decoration: none;
-  background: var(--color-surface-2);
-}
-
-.home-nudge {
-  padding: var(--space-5) 0 0;
-  border-top: 1px solid var(--color-border-light);
-}
-
-.home-nudge-kicker {
-  margin: 0 0 var(--space-2);
-  font-size: 0.68rem;
-  font-weight: 700;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--color-accent);
-}
-
-.home-nudge-text {
-  margin: 0 0 var(--space-4);
-  font-size: var(--font-size-sm);
-  color: var(--color-text-muted);
-  max-width: 36ch;
-}
-
-.home-nudge-actions {
-  display: flex;
-  gap: var(--space-2);
-}
-
-.home-nudge-link {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 44px;
-  padding: 0 var(--space-5);
-  background: var(--color-ink);
-  color: var(--color-on-ink);
-  font-size: 0.72rem;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  text-decoration: none;
-  border-radius: var(--radius);
-}
-
-.home-nudge-link.secondary {
-  background: transparent;
-  color: var(--color-ink);
-  border: 1.5px solid var(--color-ink);
-}
-
-.home-nudge-link:hover {
-  text-decoration: none;
-}
-
-.home-page > .home-days {
-  animation: rise 0.7s var(--ease-out) 0.14s both;
-}
-
-.home-hero {
-  position: relative;
-  isolation: isolate;
-  overflow: hidden;
-  padding: var(--space-8) var(--space-4) var(--space-6);
-  border-radius: 0;
-  margin: calc(-1 * var(--space-4)) calc(-1 * var(--page-gutter)) 0;
-  width: calc(100% + 2 * var(--page-gutter));
-  min-height: min(38vh, 300px);
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  color: #ffffff;
-  background:
-    linear-gradient(180deg, transparent 20%, rgba(0, 0, 0, 0.85) 100%),
-    linear-gradient(145deg, #1a1a1a 0%, #000000 55%, #111111 100%);
-  border: none;
-  box-shadow: none;
 }
 
 @media (max-width: 480px) {
   .home-page {
-    gap: var(--space-4);
-  }
-
-  .home-hero {
-    margin-left: calc(-1 * var(--page-gutter));
-    margin-right: calc(-1 * var(--page-gutter));
-    width: calc(100% + 2 * var(--page-gutter));
-    min-height: min(28vh, 210px);
-    padding: var(--space-5) var(--page-gutter) var(--space-4);
-  }
-
-  .home-brand {
-    font-size: clamp(2.4rem, 14vw, 3.2rem);
-  }
-
-  .home-lede {
-    margin-bottom: var(--space-4);
-    font-size: var(--font-size-sm);
+    gap: var(--space-3);
   }
 }
 
-.home-hero-aurora {
-  position: absolute;
-  inset: 0;
-  overflow: hidden;
-  pointer-events: none;
-  z-index: 0;
-  background:
-    radial-gradient(ellipse 80% 60% at 70% 20%, rgba(250, 84, 0, 0.22), transparent 55%),
-    radial-gradient(ellipse 50% 40% at 10% 80%, rgba(255, 255, 255, 0.06), transparent 50%);
+.home-link-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: var(--space-3) 0;
+  border-top: 1px solid var(--color-border-light);
+  border-bottom: 1px solid var(--color-border-light);
+  text-decoration: none;
+  color: inherit;
+  min-height: 52px;
 }
 
-.home-orb {
-  display: none;
+.home-link-row:hover {
+  text-decoration: none;
+  opacity: 0.8;
 }
 
-.home-kicker,
-.home-brand,
-.home-lede,
-.home-progress {
-  position: relative;
-  z-index: 1;
+.home-link-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
 }
 
-.home-kicker {
-  margin: 0 0 var(--space-3);
-  font-size: 0.68rem;
+.home-link-copy strong {
+  font-size: 0.95rem;
   font-weight: 700;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.55);
-  animation: fade-up 0.7s var(--ease-out) 0.12s both;
 }
 
-.home-brand {
-  margin: 0 0 var(--space-3);
-  font-family: var(--font-display);
-  font-size: clamp(4.2rem, 18vw, 5.8rem);
-  font-weight: 400;
-  letter-spacing: 0.02em;
-  line-height: 0.85;
-  color: #ffffff;
-  text-transform: uppercase;
-  -webkit-text-fill-color: unset;
-  background: none;
-  animation: fade-up 0.75s var(--ease-out) 0.18s both;
+.home-link-copy small {
+  font-size: 0.72rem;
+  color: var(--color-text-muted);
 }
 
-.home-lede {
-  margin: 0 0 var(--space-8);
-  font-size: var(--font-size-base);
-  font-weight: 500;
-  color: rgba(255, 255, 255, 0.7);
-  max-width: 24ch;
-  animation: fade-up 0.7s var(--ease-out) 0.24s both;
-}
-
-.home-progress {
-  animation: fade-up 0.7s var(--ease-out) 0.3s both;
-}
-
-.home-progress .progress-bar {
-  height: 3px;
-  background: rgba(255, 255, 255, 0.2);
-  border-radius: 0;
-}
-
-.home-progress .progress-bar-fill {
-  background: #ffffff;
-}
-
-.home-progress-text {
-  margin: var(--space-3) 0 0;
-  font-size: var(--font-size-sm);
-  color: rgba(255, 255, 255, 0.5);
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  font-weight: 600;
-}
-
-.home-progress-text strong {
-  color: #ffffff;
+.home-link-done {
+  flex-shrink: 0;
+  font-size: 0.62rem;
   font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-success);
+}
+
+.home-link-chevron {
+  flex-shrink: 0;
+  font-size: 1.1rem;
+  color: var(--color-text-muted);
+}
+
+.home-nudge-line {
+  margin: 0;
+  font-size: 0.78rem;
+  color: var(--color-text-muted);
+  line-height: 1.4;
+}
+
+.home-nudge-line a {
+  color: var(--color-ink);
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.home-page > .home-days {
+  animation: rise 0.7s var(--ease-out) 0.14s both;
 }
 
 .home-today {
@@ -472,6 +283,19 @@
   transition: opacity var(--dur-fast);
 }
 
+@media (max-width: 480px) {
+  .day-item {
+    min-height: 64px;
+    padding: var(--space-3) 0;
+    gap: var(--space-3);
+  }
+
+  .day-number {
+    width: 34px;
+    height: 34px;
+  }
+}
+
 .day-item:hover {
   border: none;
   box-shadow: none;
@@ -580,40 +404,20 @@
 }
 
 /* Workout Hub */
-.hub-hero {
-  min-height: min(30vh, 240px);
-}
-
-@media (max-width: 480px) {
-  .hub-hero {
-    min-height: min(26vh, 200px);
-  }
-
-  .day-item {
-    min-height: 64px;
-    padding: var(--space-3) 0;
-    gap: var(--space-3);
-  }
-
-  .day-number {
-    width: 34px;
-    height: 34px;
-  }
-}
-
 .hub-programs-head {
   display: flex;
   justify-content: space-between;
   align-items: baseline;
-  margin-bottom: var(--space-2);
+  margin-bottom: var(--space-1);
 }
 
 .hub-programs-head h2 {
   margin: 0;
-  font-family: var(--font-display);
-  font-size: 1.5rem;
-  letter-spacing: 0.04em;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
+  color: var(--color-text-muted);
 }
 
 .hub-programs-head span {

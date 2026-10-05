@@ -6,10 +6,9 @@ import {
   getMorningCompletionCount,
   wasMorningDoneToday,
 } from '../services/progress';
-import { scaleMorningRoutine } from '../utils/difficulty';
+import { DIFFICULTY_LABELS, scaleMorningRoutine } from '../utils/difficulty';
 import { youtubeEmbedUrl } from '../data/dayVideos';
 import MorningSession from '../components/MorningSession';
-import WorkoutPreview from '../components/WorkoutPreview';
 import './MorningPage.css';
 
 interface Props {
@@ -49,8 +48,6 @@ function StoryCard({
   onToggleDemo: () => void;
   onStart: () => void;
 }) {
-  const thumb = `https://i.ytimg.com/vi/${routine.video.videoId}/hqdefault.jpg`;
-
   return (
     <article className={`morning-story ${today ? 'done' : ''}`}>
       <div className="morning-story-meta">
@@ -106,7 +103,6 @@ function StoryCard({
           >
             Odpri Short na YouTube
           </a>
-          <img src={thumb} alt="" className="sr-only" />
         </div>
       )}
     </article>
@@ -118,48 +114,21 @@ export default function MorningPage({
   onCompleteRoutine,
   onDifficultyChange,
 }: Props) {
-  const [preview, setPreview] = useState<MorningRoutine | null>(null);
   const [active, setActive] = useState<MorningRoutine | null>(null);
   const [demoId, setDemoId] = useState<string | null>(null);
   const anyToday = wasMorningDoneToday(state);
 
-  const scaledPreview = useMemo(() => {
-    if (!preview) return null;
-    return scaleMorningRoutine(preview, state.difficulty);
-  }, [preview, state.difficulty]);
+  const scaledRoutines = useMemo(
+    () => morningRoutines.map((r) => scaleMorningRoutine(r, state.difficulty)),
+    [state.difficulty],
+  );
 
-  const startFromPreview = () => {
-    if (!preview) return;
-    setActive(scaleMorningRoutine(preview, state.difficulty));
-    setPreview(null);
+  const startRoutine = (routine: MorningRoutine) => {
+    setActive(routine);
   };
 
   return (
     <>
-      {preview && scaledPreview && (
-        <WorkoutPreview
-          kicker="Jutranji blok"
-          title={preview.title}
-          summary={preview.summary}
-          meta={[
-            { label: 'Čas', value: `~${scaledPreview.estimatedMinutes} min` },
-            { label: 'Kdaj', value: preview.when },
-            { label: 'Oprema', value: 'Brez' },
-            { label: 'Gibi', value: String(scaledPreview.moves.length) },
-          ]}
-          steps={scaledPreview.moves.map((m) => ({
-            name: m.name,
-            detail: `${m.reps}×`,
-          }))}
-          stepsTitle="Gibi"
-          difficulty={state.difficulty}
-          onDifficultyChange={onDifficultyChange}
-          ctaLabel={wasMorningDoneToday(state, preview.id) ? 'Ponovi' : 'Začni'}
-          onStart={startFromPreview}
-          onClose={() => setPreview(null)}
-        />
-      )}
-
       {active && (
         <MorningSession
           routine={active}
@@ -176,16 +145,29 @@ export default function MorningPage({
         </Link>
 
         <header className="morning-hero">
-          <p className="morning-hero-kicker">Posebna zgodba</p>
-          <h1 className="morning-hero-title">Jutranji blok</h1>
-          <p className="morning-hero-lede">
-            Predogled, nato težavnost (30× / 60×). Tapni ponovitve. Nato hoja.
-          </p>
-          {anyToday && <span className="morning-today-badge">Danes že kaj opravljeno ✓</span>}
+          <div className="morning-hero-row">
+            <h1 className="morning-hero-title">Jutranji blok</h1>
+            {anyToday && <span className="morning-today-badge">Danes ✓</span>}
+          </div>
+          <p className="morning-hero-lede">Tapni ponovitve. Nato hoja.</p>
         </header>
 
+        <div className="morning-diff" role="group" aria-label="Težavnost">
+          {(['easy', 'standard'] as WorkoutDifficulty[]).map((d) => (
+            <button
+              key={d}
+              type="button"
+              className={`morning-diff-btn ${state.difficulty === d ? 'active' : ''}`}
+              onClick={() => onDifficultyChange(d)}
+            >
+              {DIFFICULTY_LABELS[d]}
+              <small>{d === 'easy' ? 'Manj ponovitev' : 'Polni tempo'}</small>
+            </button>
+          ))}
+        </div>
+
         <div className="morning-stories">
-          {morningRoutines.map((routine) => (
+          {scaledRoutines.map((routine) => (
             <StoryCard
               key={routine.id}
               routine={routine}
@@ -195,7 +177,7 @@ export default function MorningPage({
               onToggleDemo={() =>
                 setDemoId((id) => (id === routine.id ? null : routine.id))
               }
-              onStart={() => setPreview(routine)}
+              onStart={() => startRoutine(routine)}
             />
           ))}
         </div>

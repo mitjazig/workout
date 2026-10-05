@@ -68,14 +68,10 @@ export default function ProgramHomePage({ state }: Props) {
       </Link>
 
       <header className="program-home-hero">
-        {program.badge && <p className="program-home-kicker">{program.badge}</p>}
-        <h1 className="program-home-title">{program.name}</h1>
-        <p className="program-home-lede">
-          {program.shortDescription ?? program.description}
-        </p>
-        {program.safetyNote && (
-          <p className="program-home-safety">{program.safetyNote}</p>
-        )}
+        <div className="program-home-title-row">
+          <h1 className="program-home-title">{program.name}</h1>
+          {program.badge && <span className="program-home-badge">{program.badge}</span>}
+        </div>
         <div className="program-home-progress">
           <div
             className="progress-bar"
@@ -88,17 +84,25 @@ export default function ProgramHomePage({ state }: Props) {
           </div>
           <p className="program-home-progress-text">
             <strong>
-              {daysDone} / {totalDays}
+              {daysDone}/{totalDays}
             </strong>{' '}
             dni · {percent}%
+            {(program.durationLabel || program.equipment?.length) && (
+              <>
+                {' '}
+                ·{' '}
+                {[
+                  program.durationLabel,
+                  ...(program.equipment?.length ? program.equipment : ['Brez opreme']),
+                ]
+                  .filter(Boolean)
+                  .join(' · ')}
+              </>
+            )}
           </p>
         </div>
-        {(program.equipment?.length || program.durationLabel) && (
-          <p className="program-home-equip">
-            {[program.durationLabel, ...(program.equipment?.length ? program.equipment : ['Brez opreme'])]
-              .filter(Boolean)
-              .join(' · ')}
-          </p>
+        {program.safetyNote && (
+          <p className="program-home-safety">{program.safetyNote}</p>
         )}
       </header>
 

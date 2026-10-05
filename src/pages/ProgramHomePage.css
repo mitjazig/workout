@@ -29,39 +29,39 @@
 }
 
 .program-home-hero {
-  padding-bottom: var(--space-5);
+  padding-bottom: var(--space-3);
   border-bottom: 1px solid var(--color-border-light);
 }
 
-.program-home-kicker {
-  margin: 0 0 var(--space-2);
-  font-size: 0.68rem;
+.program-home-title-row {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+  margin-bottom: var(--space-2);
+}
+
+.program-home-title {
+  margin: 0;
+  font-size: 1.25rem;
+  line-height: 1.2;
   font-weight: 700;
-  letter-spacing: 0.18em;
+}
+
+.program-home-badge {
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--color-accent);
 }
 
-.program-home-title {
-  margin: 0 0 var(--space-2);
-  font-size: clamp(1.9rem, 8.5vw, 3rem);
-  line-height: 1.02;
-}
-
-.program-home-lede {
-  margin: 0 0 var(--space-3);
-  font-size: var(--font-size-sm);
-  color: var(--color-text-muted);
-  max-width: 40ch;
-  line-height: 1.55;
-}
-
 .program-home-safety {
-  margin: 0 0 var(--space-4);
-  font-size: 0.8rem;
+  margin: var(--space-2) 0 0;
+  font-size: 0.72rem;
   color: var(--color-text-muted);
   max-width: 48ch;
-  line-height: 1.45;
+  line-height: 1.4;
 }
 
 @media (max-width: 480px) {
@@ -70,7 +70,7 @@
   }
 
   .program-home-hero {
-    padding-bottom: var(--space-4);
+    padding-bottom: var(--space-3);
   }
 
   .program-next {
@@ -78,7 +78,7 @@
   }
 
   .program-next-title {
-    font-size: clamp(1.5rem, 7vw, 2rem);
+    font-size: clamp(1.35rem, 6vw, 1.75rem);
   }
 
   .program-week-dot {
@@ -90,22 +90,18 @@
 .program-home-progress {
   display: flex;
   flex-direction: column;
-  gap: var(--space-2);
+  gap: var(--space-1);
 }
 
 .program-home-progress-text {
   margin: 0;
-  font-size: var(--font-size-sm);
+  font-size: 0.72rem;
   color: var(--color-text-muted);
+  letter-spacing: 0.02em;
 }
 
-.program-home-equip {
-  margin: var(--space-3) 0 0;
-  font-size: 0.72rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--color-text-faint);
+.program-home-progress .progress-bar {
+  height: 3px;
 }
 
 .program-weeks {
