@@ -2,7 +2,7 @@ import { useState } from 'react';
 import type { AppState, CardioMode, FeedbackSettings } from '../types';
 import { getProgram } from '../data/programs';
 import { requestNotificationPermission } from '../services/reminders';
-import { unlockAudio } from '../utils/feedback';
+import { stopAudio, unlockAudio } from '../utils/feedback';
 import CardioModeToggle from '../components/CardioModeToggle';
 import PwaInstallButton from '../components/PwaInstallButton';
 import './SettingsPage.css';
@@ -129,7 +129,11 @@ export default function SettingsPage({
             type="checkbox"
             checked={feedback.sound}
             onChange={(e) => {
-              void unlockAudio();
+              if (e.target.checked) {
+                void unlockAudio();
+              } else {
+                stopAudio();
+              }
               onFeedbackChange({ sound: e.target.checked });
             }}
             className="toggle-input"

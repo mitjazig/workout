@@ -7,6 +7,8 @@ import './MorningSession.css';
 interface Props {
   routine: MorningRoutine;
   feedback: FeedbackSettings;
+  sessionKicker?: string;
+  doneBackLabel?: string;
   onClose: () => void;
   onComplete: (routineId: string) => void;
 }
@@ -19,7 +21,14 @@ function IconBack() {
   );
 }
 
-export default function MorningSession({ routine, feedback, onClose, onComplete }: Props) {
+export default function MorningSession({
+  routine,
+  feedback,
+  sessionKicker = 'Jutranja zgodba',
+  doneBackLabel = 'Nazaj na jutro',
+  onClose,
+  onComplete,
+}: Props) {
   const [index, setIndex] = useState(0);
   const [count, setCount] = useState(0);
   const [done, setDone] = useState(false);
@@ -77,11 +86,11 @@ export default function MorningSession({ routine, feedback, onClose, onComplete 
           <span className="morning-session-label">Končano</span>
         </div>
         <div className="morning-done">
-          <p className="morning-done-kicker">Jutranja zgodba</p>
+          <p className="morning-done-kicker">{sessionKicker}</p>
           <h2>{routine.title}</h2>
           <p>{routine.finishNote}</p>
           <button type="button" className="morning-btn primary wide" onClick={onClose}>
-            Nazaj na jutro
+            {doneBackLabel}
           </button>
         </div>
       </div>

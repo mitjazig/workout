@@ -7,6 +7,7 @@ import {
   getWeeklySummary,
   hasActivityToday,
   wasMorningDoneToday,
+  wasBonusDoneToday,
 } from '../services/progress';
 import ProgramCard from '../components/ProgramCard';
 import PwaInstallButton from '../components/PwaInstallButton';
@@ -24,6 +25,7 @@ export default function HomePage({ state, onSelectProgram }: HomePageProps) {
   const week = getWeeklySummary(state);
   const activeToday = hasActivityToday(state);
   const morningToday = wasMorningDoneToday(state);
+  const bonusToday = wasBonusDoneToday(state);
 
   const openProgram = async (programId: string) => {
     await onSelectProgram(programId);
@@ -55,6 +57,20 @@ export default function HomePage({ state, onSelectProgram }: HomePageProps) {
           <small>5 min ali 2 min · nato hoja</small>
         </span>
         {morningToday ? (
+          <span className="home-link-done">Danes ✓</span>
+        ) : (
+          <span className="home-link-chevron" aria-hidden>
+            →
+          </span>
+        )}
+      </Link>
+
+      <Link to="/bonus" className="home-link-row home-link-row--tight">
+        <span className="home-link-copy">
+          <strong>Bonus vaje</strong>
+          <small>Sedeči core · stol · ~8 min</small>
+        </span>
+        {bonusToday ? (
           <span className="home-link-done">Danes ✓</span>
         ) : (
           <span className="home-link-chevron" aria-hidden>

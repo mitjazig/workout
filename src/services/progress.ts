@@ -8,6 +8,7 @@ import type {
   FeedbackSettings,
   HeatmapDay,
   MorningCompletion,
+  BonusCompletion,
   ProgressStats,
   TreadmillCompletion,
   UserProgress,
@@ -17,12 +18,13 @@ import type {
 import { getProgram, allPrograms } from '../data/programs';
 import { challengeProgram } from '../data/challengeProgram';
 import { getMorningRoutine } from '../data/morningRoutines';
+import { getBonusRoutine } from '../data/bonusRoutines';
 import { getTreadmillWorkout } from '../data/treadmillWorkouts';
 import { BADGES } from '../data/badges';
 import { storage } from './storage';
 
 const STATE_KEY = 'app-state';
-const STATE_VERSION = 11;
+const STATE_VERSION = 13;
 
 /** Hitri vnos steze (brez vodene seje) */
 export const QUICK_TREADMILL_ID = 'tm-quick';
@@ -56,7 +58,7 @@ const defaultReminders = {
 };
 
 const defaultFeedback: FeedbackSettings = {
-  sound: true,
+  sound: false,
   haptics: true,
 };
 
@@ -101,6 +103,7 @@ function createDefaultState(): AppState {
     reminders: defaultReminders,
     treadmillCompletions: [],
     morningCompletions: [],
+    bonusCompletions: [],
     cardioMode: 'treadmill',
     feedback: defaultFeedback,
     onboardingDone: false,
@@ -120,7 +123,7 @@ function isKnownProgramId(id: string | undefined): id is string {
 function migrateState(saved: Partial<AppState> & { progress?: UserProgress }): AppState {
   const base = createDefaultState();
 
-  const knownVersions = [3, 4, 5, 6, 7, 8, 9, 10, STATE_VERSION];
+  const knownVersions = [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, STATE_VERSION];
   const hasPrograms =
     saved.programs &&
     (saved.programs[challengeProgram.id] ||
@@ -147,9 +150,14 @@ function migrateState(saved: Partial<AppState> & { progress?: UserProgress }): A
       reminders: { ...base.reminders, ...saved.reminders },
       treadmillCompletions: normalizeTreadmillCompletions(saved.treadmillCompletions),
       morningCompletions: normalizeMorningCompletions(saved.morningCompletions),
+      bonusCompletions: normalizeBonusCompletions(saved.bonusCompletions),
       cardioMode: saved.cardioMode === 'outdoor' ? 'outdoor' : 'treadmill',
       feedback: {
-        sound: saved.feedback?.sound ?? true,
+        // v12: zvok privzeto izklopljen (enkrat ob nadgradnji)
+        sound:
+          typeof saved.version === 'number' && saved.version >= 12
+            ? (saved.feedback?.sound ?? false)
+            : false,
         haptics: saved.feedback?.haptics ?? true,
       },
       onboardingDone: saved.onboardingDone === true,
@@ -166,6 +174,16 @@ function normalizeMorningCompletions(
 ): MorningCompletion[] {
   return (list ?? []).map((c, i) => ({
     id: c.id || `morning-legacy-${c.routineId}-${c.completedAt}-${i}`,
+    routineId: c.routineId,
+    completedAt: c.completedAt,
+  }));
+}
+
+function normalizeBonusCompletions(
+  list: Array<Partial<BonusCompletion> & Pick<BonusCompletion, 'routineId' | 'completedAt'>> | undefined,
+): BonusCompletion[] {
+  return (list ?? []).map((c, i) => ({
+    id: c.id || `bonus-legacy-${c.routineId}-${c.completedAt}-${i}`,
     routineId: c.routineId,
     completedAt: c.completedAt,
   }));
@@ -494,6 +512,53 @@ export async function removeMorningCompletion(
   return updated;
 }
 
+export function getBonusCompletions(state: AppState): BonusCompletion[] {
+  return state.bonusCompletions ?? [];
+}
+
+export function getBonusCompletionCount(state: AppState, routineId?: string): number {
+  const list = getBonusCompletions(state);
+  if (!routineId) return list.length;
+  return list.filter((c) => c.routineId === routineId).length;
+}
+
+export function wasBonusDoneToday(state: AppState, routineId?: string): boolean {
+  const today = dateKeyFromDate(startOfLocalDay(new Date()));
+  return getBonusCompletions(state).some((c) => {
+    if (formatLocalDateKey(c.completedAt) !== today) return false;
+    return routineId ? c.routineId === routineId : true;
+  });
+}
+
+export async function markBonusComplete(
+  state: AppState,
+  routineId: string,
+): Promise<AppState> {
+  const entry: BonusCompletion = {
+    id: `bonus-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 8)}`,
+    routineId,
+    completedAt: new Date().toISOString(),
+  };
+  const updated: AppState = {
+    ...state,
+    bonusCompletions: [...getBonusCompletions(state), entry],
+  };
+  await saveState(updated);
+  return updated;
+}
+
+export async function removeBonusCompletion(
+  state: AppState,
+  completionId: string,
+): Promise<AppState> {
+  const updated: AppState = {
+    ...state,
+    bonusCompletions: getBonusCompletions(state).filter((c) => c.id !== completionId),
+  };
+  await saveState(updated);
+  return updated;
+}
+
 function recalcCurrentDayIndex(programId: string, completedDays: DayProgress[]): number {
   const program = getProgram(programId);
   const firstIncomplete = program.days.findIndex((day) => {
@@ -614,6 +679,19 @@ export function getActivityLog(state: AppState): ActivityDayGroup[] {
     });
   }
 
+  for (const b of getBonusCompletions(state)) {
+    const routine = getBonusRoutine(b.routineId);
+    items.push({
+      id: `bonus-${b.id}`,
+      kind: 'bonus',
+      title: routine?.title ?? b.routineId,
+      subtitle: `Bonus · ${routine?.estimatedMinutes ?? '?'} min`,
+      completedAt: b.completedAt,
+      completionId: b.id,
+      routineId: b.routineId,
+    });
+  }
+
   items.sort((a, b) => (a.completedAt < b.completedAt ? 1 : -1));
 
   const groups = new Map<string, ActivityLogItem[]>();
@@ -659,6 +737,9 @@ function getActiveDateKeys(state: AppState): Map<string, number> {
   }
   for (const m of getMorningCompletions(state)) {
     bump(m.completedAt);
+  }
+  for (const b of getBonusCompletions(state)) {
+    bump(b.completedAt);
   }
   return counts;
 }

@@ -277,6 +277,10 @@
   color: #c45c00;
 }
 
+.activity-kind-bonus {
+  color: var(--color-accent);
+}
+
 .activity-title {
   font-size: var(--font-size-sm);
   font-weight: 700;

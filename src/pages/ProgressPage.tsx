@@ -25,6 +25,7 @@ interface ProgressPageProps {
   onRemoveTreadmill: (completionId: string) => void;
   onUpdateTreadmillKm: (completionId: string, distanceKm?: number) => void;
   onRemoveMorning: (completionId: string) => void;
+  onRemoveBonus: (completionId: string) => void;
 }
 
 function formatTime(iso: string) {
@@ -89,6 +90,7 @@ export default function ProgressPage({
   onRemoveTreadmill,
   onUpdateTreadmillKm,
   onRemoveMorning,
+  onRemoveBonus,
 }: ProgressPageProps) {
   const program = getProgram(state.activeProgramId);
   const progress = getActiveProgress(state);
@@ -114,6 +116,8 @@ export default function ProgressPage({
       onRemoveTreadmill(item.completionId);
     } else if (item.kind === 'morning' && item.completionId) {
       onRemoveMorning(item.completionId);
+    } else if (item.kind === 'bonus' && item.completionId) {
+      onRemoveBonus(item.completionId);
     }
     setConfirmId(null);
   };
@@ -254,7 +258,9 @@ export default function ProgressPage({
                             ? 'Izziv'
                             : item.kind === 'morning'
                               ? 'Jutro'
-                              : 'Steza'}
+                              : item.kind === 'bonus'
+                                ? 'Bonus'
+                                : 'Steza'}
                         </span>
                         <strong className="activity-title">{item.title}</strong>
                         <span className="activity-meta">

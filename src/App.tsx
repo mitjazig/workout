@@ -9,6 +9,7 @@ import ProgressPage from './pages/ProgressPage';
 import SettingsPage from './pages/SettingsPage';
 import TreadmillPage from './pages/TreadmillPage';
 import MorningPage from './pages/MorningPage';
+import BonusPage from './pages/BonusPage';
 
 export default function App() {
   const {
@@ -23,6 +24,8 @@ export default function App() {
     finishOnboarding,
     completeMorning,
     removeMorning,
+    completeBonus,
+    removeBonus,
     setReminders,
     selectProgram,
     reset,
@@ -83,6 +86,16 @@ export default function App() {
           }
         />
         <Route
+          path="/bonus"
+          element={
+            <BonusPage
+              state={state}
+              onCompleteRoutine={completeBonus}
+              onDifficultyChange={updateDifficulty}
+            />
+          }
+        />
+        <Route
           path="/treadmill"
           element={
             <TreadmillPage state={state} onCompleteWorkout={completeTreadmill} />
@@ -97,6 +110,7 @@ export default function App() {
               onRemoveTreadmill={removeTreadmill}
               onUpdateTreadmillKm={updateTreadmillKm}
               onRemoveMorning={removeMorning}
+              onRemoveBonus={removeBonus}
             />
           }
         />

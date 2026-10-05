@@ -6,10 +6,13 @@ export interface FeedbackPrefs {
 }
 
 let audioCtx: AudioContext | null = null;
+const activeOscillators = new Set<OscillatorNode>();
 
 function getCtx(): AudioContext | null {
   if (typeof window === 'undefined') return null;
-  const AC = window.AudioContext || (window as unknown as { webkitAudioContext?: typeof AudioContext }).webkitAudioContext;
+  const AC =
+    window.AudioContext ||
+    (window as unknown as { webkitAudioContext?: typeof AudioContext }).webkitAudioContext;
   if (!AC) return null;
   if (!audioCtx) audioCtx = new AC();
   return audioCtx;
@@ -17,7 +20,7 @@ function getCtx(): AudioContext | null {
 
 function beep(freq: number, durationMs: number, gain = 0.08, when = 0) {
   const ctx = getCtx();
-  if (!ctx) return;
+  if (!ctx || ctx.state === 'closed') return;
   const t0 = ctx.currentTime + when;
   const osc = ctx.createOscillator();
   const g = ctx.createGain();
@@ -28,8 +31,25 @@ function beep(freq: number, durationMs: number, gain = 0.08, when = 0) {
   g.gain.exponentialRampToValueAtTime(0.0001, t0 + durationMs / 1000);
   osc.connect(g);
   g.connect(ctx.destination);
+  activeOscillators.add(osc);
+  osc.onended = () => activeOscillators.delete(osc);
   osc.start(t0);
   osc.stop(t0 + durationMs / 1000 + 0.02);
+}
+
+/** Takoj ustavi vse pike in suspendira audio. */
+export function stopAudio(): void {
+  for (const osc of activeOscillators) {
+    try {
+      osc.stop();
+    } catch {
+      /* already stopped */
+    }
+  }
+  activeOscillators.clear();
+  if (audioCtx && audioCtx.state !== 'closed') {
+    void audioCtx.suspend().catch(() => undefined);
+  }
 }
 
 export async function unlockAudio(): Promise<void> {

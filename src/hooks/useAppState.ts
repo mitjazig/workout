@@ -11,6 +11,8 @@ import {
   completeOnboarding,
   markMorningComplete,
   removeMorningCompletion,
+  markBonusComplete,
+  removeBonusCompletion,
   resetAllProgress,
   resetProgress,
   resetTreadmillProgress,
@@ -20,6 +22,7 @@ import {
   setFeedback,
 } from '../services/progress';
 import { bindReminderState, updateReminders, initReminders } from '../services/reminders';
+import { stopAudio } from '../utils/feedback';
 
 export function useAppState() {
   const [state, setState] = useState<AppState | null>(null);
@@ -35,6 +38,7 @@ export function useAppState() {
     loadState().then((s) => {
       setState(s);
       initReminders(s.reminders);
+      if (!s.feedback.sound) stopAudio();
       setLoading(false);
     });
   }, []);
@@ -174,6 +178,22 @@ export function useAppState() {
     });
   }, []);
 
+  const completeBonus = useCallback(async (routineId: string) => {
+    setState((prev) => {
+      if (!prev) return prev;
+      markBonusComplete(prev, routineId).then(setState);
+      return prev;
+    });
+  }, []);
+
+  const removeBonus = useCallback(async (completionId: string) => {
+    setState((prev) => {
+      if (!prev) return prev;
+      removeBonusCompletion(prev, completionId).then(setState);
+      return prev;
+    });
+  }, []);
+
   return {
     state,
     loading,
@@ -186,6 +206,8 @@ export function useAppState() {
     finishOnboarding,
     completeMorning,
     removeMorning,
+    completeBonus,
+    removeBonus,
     setReminders,
     selectProgram,
     reset,

@@ -184,10 +184,17 @@ export interface MorningCompletion {
   completedAt: string;
 }
 
+/** Opravljena bonus rutina */
+export interface BonusCompletion {
+  id: string;
+  routineId: string;
+  completedAt: string;
+}
+
 /** Vnos v dnevniku aktivnosti */
 export interface ActivityLogItem {
   id: string;
-  kind: 'challenge' | 'treadmill' | 'morning';
+  kind: 'challenge' | 'treadmill' | 'morning' | 'bonus';
   title: string;
   subtitle: string;
   completedAt: string;
@@ -212,6 +219,8 @@ export interface AppState {
   treadmillCompletions: TreadmillCompletion[];
   /** Jutranji blok (posebna zgodba) */
   morningCompletions: MorningCompletion[];
+  /** Bonus vaje (ločeno od programov) */
+  bonusCompletions: BonusCompletion[];
   /** Privzeti način za hojo/kardio v izzivu */
   cardioMode: CardioMode;
   /** Zvok / vibracija med vadbo */
